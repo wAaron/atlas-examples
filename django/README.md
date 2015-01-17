@@ -9,7 +9,9 @@ To bring up a development environment, run `vagrant up` in the top directory whi
 The deployment process has three steps. The first step is sending the application code to Atlas so it can be packaged as a deployable artifact. The second step is configuring the deployable artifact by installing required packages such as Apache, MySQL, etc. The final step is configuring the infrastructure which the artifact is deployed onto. In this example, we'll configure two t2.micro instances on AWS behind a load balancer. 
 
 ### Create an Atlas account
-If you haven't already, you must create an [Atlas account](https://atlas.hashicorp.com) in order to securely deploy to AWS. 
+If you haven't already, you must create an [Atlas account](https://atlas.hashicorp.com) in order to securely deploy to AWS. Then generate an Atlas token in your [account settings](https://atlas.hashicorp.com/settings/tokens) and set it as an environment variable in order authorize communications with Atlas. 
+
+`$ export ATLAS_TOKEN=YOUR_TOKEN`
 
 ### Push your application to Atlas
 Send your application code to Atlas by running `vagrant push` in the top directory which contains the Vagrant file. Before pushing, be sure to update the Vagrantfile with your username, otherwise you the push will fail. You will be prompted to enter your Atlas credentials in order to securely send this information to your Atlas account. 
