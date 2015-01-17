@@ -41,7 +41,7 @@ Now that you have an AMI configured with Django, you need to deploy it on an AWS
 
 Then run `terraform apply`, which creates the Django artifact. Uncomment all the sections and then run `terraform apply` again, which will deploy the Django artifact on a t2.micro instance behind a load balancer. If you run `terraform show` and navigate to the dns_name in your browser, you'll see you have a nicely deployed Django app! 
 
-## Develop and Deploy workflow
+## Develop and deploy workflow
 Now anytime you want to test changes in development, just run `vagrant up`. When you're happy with your changes, run `vagrant push` to send the changes to Atlas. This will kick off a build to create an AMI with your updated application. When the build finishes, just run `terraform apply` locally to first create the artifact, and then `terraform apply` to deploy the artifact to AWS. 
 
 For advanced users, you can read more about the tools [Vagrant](https://vagrantup.com), [Packer](https://packer.io), and [Terraform](https://terraform.io).
