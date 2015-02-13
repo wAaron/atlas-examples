@@ -1,0 +1,1 @@
+sudo mv /files/scripts/authorized_keys ~/.ssh/authorized_keys
