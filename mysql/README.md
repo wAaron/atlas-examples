@@ -22,7 +22,7 @@ provider "aws" {
     region = "us-east-1"
 }
 
-resource "atlas_artifact" "mongo" {
+resource "atlas_artifact" "mysql" {
     name = "<username>/mysql"
     type = "aws.ami"
 }
