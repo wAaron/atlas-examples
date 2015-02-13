@@ -5,7 +5,7 @@ provider "aws" {
 }
 
 resource "atlas_artifact" "mysql" {
-    name = "KFishner/mysql"
+    name = "<username>/mysql"
     type = "aws.ami"
 }
 
