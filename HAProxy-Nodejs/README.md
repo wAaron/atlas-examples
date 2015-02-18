@@ -86,7 +86,7 @@ resource "atlas_artifact" "haproxy" {
 // resource "aws_instance" "nodejs" {
 //     instance_type = "t2.small"
 //     ami = "${atlas_artifact.nodejs.metadata_full.region-us-east-1}"
-//     security_groups = ["haproxy"]
+//     security_groups = ["${aws_security_group.haproxy.name}"]
 
 //     # This will create 2 instances
 //     count = 2
@@ -98,7 +98,7 @@ resource "atlas_artifact" "haproxy" {
 // resource "aws_instance" "haproxy" {
 //     instance_type = "t2.small"
 //     ami = "${atlas_artifact.haproxy.metadata_full.region-us-east-1}"
-//     security_groups = ["haproxy"]
+//     security_groups = ["${aws_security_group.haproxy.name}"]
 
 //     # This will create 1 instance
 //     count = 1
