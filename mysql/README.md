@@ -8,7 +8,7 @@ General setup
 2. Create an Atlas account
 3. Generate an [Atlas token](https://atlas.hashicorp.com/settings/tokens) and save as environment variable. 
 `export ATLAS_TOKEN=<your_token>`
-4. In the Packer file `mysql.json` and Terraform file `mysql.tf` you need to replace all instances of `<username>`,  `YOUR_SECRET_HERE`, and `YOUR_KEY_HERE` with your Atlas username and AWS keys. 
+4. In the Packer file `mysql.json`, Terraform file `mysql.tf`, and Consul upstart script `consul_client.conf` you need to replace all instances of `<username>`,  `YOUR_ATLAS_TOKEN`, `YOUR_SECRET_HERE`, and `YOUR_KEY_HERE` with your Atlas username, Atlas token, and AWS keys.
 
 Deploy MySQL
 ------------
@@ -42,4 +42,4 @@ resource "atlas_artifact" "mysql" {
 
 Advanced Features
 -----------------
-If you are running [Consul](https://consul.io) in your cluster for service discovery and health monitoring, it’s easy to update the files in this repo to bring up MySQL with a Consul agent. In the `consul_client` upstart script, you need to update `<CONSUL_SERVER_IP>` with the IPs of your Consul servers, that’s it!
+If you are running [Consul](https://consul.io) in your cluster for service discovery and health monitoring, you can navigate to the [Runtime tab](https://atlas.hashicorp.com/runtime) in your Atlas account and click on the newly created infrastructure. You'll now see the real-time health of all your nodes and services! [Learn how to deploy Consul here](https://github.com/hashicorp/atlas-examples/tree/master/consul)
