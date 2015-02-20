@@ -32,10 +32,6 @@
     },
     {
         "type": "shell",
-        "script": "scripts/debug.sh"
-    },
-    {
-        "type": "shell",
         "script": "scripts/base.sh"
     },
     {
