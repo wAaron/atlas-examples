@@ -32,9 +32,9 @@ In both configurations, Consul Template will query Consul for all nodes with the
 
 This dyanamic setup allows us to destroy and create Eve API servers at scale with confidence that the Eve configuration will always be up-to-date. You can think of Consul and Consul Template as the connective webbing between services. 
 
-Step 1: Bootstrap a Consul Cluster
+Step 1: Create a Consul Cluster
 -------------------------
-1. For Consul Template to work for with this setup, we first need to bootstrap a Consul cluster. You can follow [this walkthrough](https://github.com/hashicorp/atlas-examples/tree/master/consul) to guide you through that process. 
+1. For Consul Template to work for with this setup, we first need to create a Consul cluster. You can follow [this walkthrough](https://github.com/hashicorp/atlas-examples/tree/master/consul) to guide you through that process. 
 2. Once you have Consul up and running, you need to replace `<CONSUL_SERVER_IP>`  with the Private IPs of your Consul nodes in the `consul_client` upstart script.
 
 Step 2: Build an MongoDB AMI
