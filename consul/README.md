@@ -8,7 +8,7 @@ General setup
 2. Create an Atlas account
 3. Generate an [Atlas token](https://atlas.hashicorp.com/settings/tokens) and save as environment variable. 
 `export ATLAS_TOKEN=<your_token>`
-4. In the Packer files `consul.json` and Terraform file `consul.tf` you need to replace all instances of `<username>`,  `YOUR_SECRET_HERE`, and `YOUR_KEY_HERE` with your Atlas username and AWS keys. 
+4. In the Packer files `consul.json` and Terraform file `consul.tf` you need to replace all instances of `<username>`, `YOUR_ATLAS_TOKEN`, `YOUR_SECRET_HERE`, and `YOUR_KEY_HERE` with your Atlas username, token, and AWS keys. 
 
 Introduction and Configuring Consul
 ------------------------------------
@@ -45,7 +45,7 @@ resource "atlas_artifact" "consul" {
 // }
 ```
 
-Step 3: Create the Cluster
+Step 3: View your Consul Cluster
 ------------------------
-1. Now that the instances are provisioned, we need to connect them together. First, run `terraform show` to reveal the instance details (public IP, private IP, etc). Then SSH into one of the machines and join the cluster together by running `consul join <Node A Address> <Node B Address> <Node C Address>` with the Private IPs of your newly created instances. Run `consul members` to validate that the cluster is formed.
+1. Navigate to the [Runtime tab](https://atlas.hashicorp.com/runtime) in your Atlas account and click on the newly created infrastructure. You'll now see the real-time health of all your nodes and services!
 2. That's it! You just deployed a Consul cluster.
