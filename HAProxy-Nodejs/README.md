@@ -8,7 +8,7 @@ General setup
 2. Create an Atlas account
 3. Generate an [Atlas token](https://atlas.hashicorp.com/settings/tokens) and save as environment variable. 
 `export ATLAS_TOKEN=<your_token>`
-4. In the Vagrantfile, Packer files `haproxy.json` and `nodejs.json`, and Terraform file `infrastructure.tf` you need to replace all instances of `<username>`,  `YOUR_SECRET_HERE`, and `YOUR_KEY_HERE` with your Atlas username and AWS keys. 
+4. In the Vagrantfile, Packer files `haproxy.json` and `nodejs.json`, Terraform file `infrastructure.tf`, and Consul upstart script `consul_client.conf` you need to replace all instances of `<username>`,  `YOUR_ATLAS_TOKEN`, `YOUR_SECRET_HERE`, and `YOUR_KEY_HERE` with your Atlas username, Atlas token, and AWS keys.
 
 Introduction and Configuring HAProxy + Node.js
 -----------------------------------------------
@@ -34,10 +34,9 @@ backend webs
 ```
 This setup allows us to destroy and create backend servers at scale with confidence that the HAProxy configuration will always be up-to-date. You can think of Consul and Consul Template as the connective webbing between services. 
 
-Step 1: Bootstrap a Consul Cluster
+Step 1: Create a Consul Cluster
 -------------------------
-1. For Consul Template to work for HAProxy, we first need to bootstrap a Consul cluster. You can follow [this walkthrough](https://github.com/hashicorp/atlas-examples/tree/master/consul) to guide you through that process. 
-2. Once you have Consul up and running, you need to replace `<CONSUL_SERVER_IP>`  with the Private IPs of your Consul nodes in the `consul_client` upstart scripts for both HAProxy and Node.js.
+1. For Consul Template to work for HAProxy, we first need to create a Consul cluster. You can follow [this walkthrough](https://github.com/hashicorp/atlas-examples/tree/master/consul) to guide you through that process. 
 
 Step 2: Build an HAProxy AMI
 ---------------------
@@ -113,3 +112,4 @@ Final Step: Test HAProxy
 1. Navigate to your HAProxy stats page by going to it's Public IP on port 1936 and path /haproxy?stats. For example 52.1.212.85:1936/haproxy?stats
 2. In a new tab, hit your HAProxy Public IP on port 8080 a few times. You'll see in the stats page that your requests are being balanced evenly between the Node.js nodes. 
 3. That's it! You just deployed HAProxy and Node.js
+4. Navigate to the [Runtime tab](https://atlas.hashicorp.com/runtime) in your Atlas account and click on the newly created infrastructure. You'll now see the real-time health of all your nodes and services!

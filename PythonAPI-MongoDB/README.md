@@ -8,7 +8,7 @@ General setup
 2. Create an Atlas account
 3. Generate an [Atlas token](https://atlas.hashicorp.com/settings/tokens) and save as environment variable. 
 `export ATLAS_TOKEN=<your_token>`
-4. In the Vagrantfile, Packer files `haproxy.json` and `nodejs.json`, and Terraform file `infrastructure.tf` you need to replace all instances of `<username>`,  `YOUR_SECRET_HERE`, and `YOUR_KEY_HERE` with your Atlas username and AWS keys. 
+4. In the Vagrantfile, Packer files `eve.json` and `mongo.json`, Terraform file `infrastructure.tf`, and Consul upstart script `consul_client.conf` you need to replace all instances of `<username>`,  `YOUR_ATLAS_TOKEN`, `YOUR_SECRET_HERE`, and `YOUR_KEY_HERE` with your Atlas username, Atlas token, and AWS keys.
 
 Introduction and Configuring Eve Python API and MongoDB
 -----------------------------------------------
@@ -32,9 +32,9 @@ In both configurations, Consul Template will query Consul for all nodes with the
 
 This dyanamic setup allows us to destroy and create Eve API servers at scale with confidence that the Eve configuration will always be up-to-date. You can think of Consul and Consul Template as the connective webbing between services. 
 
-Step 1: Bootstrap a Consul Cluster
+Step 1: Create a Consul Cluster
 -------------------------
-1. For Consul Template to work for with this setup, we first need to bootstrap a Consul cluster. You can follow [this walkthrough](https://github.com/hashicorp/atlas-examples/tree/master/consul) to guide you through that process. 
+1. For Consul Template to work for with this setup, we first need to create a Consul cluster. You can follow [this walkthrough](https://github.com/hashicorp/atlas-examples/tree/master/consul) to guide you through that process. 
 2. Once you have Consul up and running, you need to replace `<CONSUL_SERVER_IP>`  with the Private IPs of your Consul nodes in the `consul_client` upstart script.
 
 Step 2: Build an MongoDB AMI
@@ -112,3 +112,4 @@ Final Step: Test Eve
 1. SSH into one of your Eve instances
 2. Run `curl -d '[{"firstname": "barack", "lastname": "obama"}' -H 'Content-Type: application/json'  http://127.0.0.1:5000/people` to write a record to your database
 3. That's it! You just deployed a fully-functional Python REST API!
+4. Navigate to the [Runtime tab](https://atlas.hashicorp.com/runtime) in your Atlas account and click on the newly created infrastructure. You'll now see the real-time health of all your nodes and services!
