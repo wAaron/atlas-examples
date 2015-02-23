@@ -10,7 +10,7 @@ resource "atlas_artifact" "mongo" {
 }
 
 resource "aws_instance" "mongo" {
-    instance_type = "t2.small"
+    instance_type = "t2.micro"
     ami = "${atlas_artifact.mongo.metadata_full.region-us-east-1}"
 
     # This will create 1 instances

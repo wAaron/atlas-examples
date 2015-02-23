@@ -83,7 +83,7 @@ resource "atlas_artifact" "haproxy" {
 // }
 
 // resource "aws_instance" "nodejs" {
-//     instance_type = "t2.small"
+//     instance_type = "t2.micro"
 //     ami = "${atlas_artifact.nodejs.metadata_full.region-us-east-1}"
 //     security_groups = ["${aws_security_group.haproxy.name}"]
 
@@ -95,7 +95,7 @@ resource "atlas_artifact" "haproxy" {
 // }
 
 // resource "aws_instance" "haproxy" {
-//     instance_type = "t2.small"
+//     instance_type = "t2.micro"
 //     ami = "${atlas_artifact.haproxy.metadata_full.region-us-east-1}"
 //     security_groups = ["${aws_security_group.haproxy.name}"]
 

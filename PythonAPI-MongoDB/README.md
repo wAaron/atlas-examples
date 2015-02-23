@@ -82,7 +82,7 @@ resource "atlas_artifact" "mongo" {
 // }
 
 // resource "aws_instance" "eve" {
-//     instance_type = "t2.small"
+//     instance_type = "t2.micro"
 //     ami = "${atlas_artifact.eve.metadata_full.region-us-east-1}"
 //     security_groups = ["${aws_security_group.allow_all.name}"]
 
@@ -94,7 +94,7 @@ resource "atlas_artifact" "mongo" {
 // }
 
 // resource "aws_instance" "mongo" {
-//     instance_type = "t2.small"
+//     instance_type = "t2.micro"
 //     ami = "${atlas_artifact.mongo.metadata_full.region-us-east-1}"
 //     security_groups = ["${aws_security_group.allow_all.name}"]
 
