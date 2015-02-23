@@ -10,7 +10,7 @@ resource "atlas_artifact" "consul" {
 }
 
 resource "aws_instance" "consul" {
-    instance_type = "t2.small"
+    instance_type = "t2.micro"
     ami = "${atlas_artifact.consul.metadata_full.region-us-east-1}"
 
     # This will create 3 instances

@@ -10,7 +10,7 @@ resource "atlas_artifact" "mysql" {
 }
 
 resource "aws_instance" "mysql" {
-    instance_type = "t2.small"
+    instance_type = "t2.micro"
     ami = "${atlas_artifact.mysql.metadata_full.region-us-east-1}"
     security_groups = ["allow_all"]
 
