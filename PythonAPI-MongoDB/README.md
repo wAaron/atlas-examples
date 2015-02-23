@@ -35,7 +35,6 @@ This dyanamic setup allows us to destroy and create Eve API servers at scale wit
 Step 1: Create a Consul Cluster
 -------------------------
 1. For Consul Template to work for with this setup, we first need to create a Consul cluster. You can follow [this walkthrough](https://github.com/hashicorp/atlas-examples/tree/master/consul) to guide you through that process. 
-2. Once you have Consul up and running, you need to replace `<CONSUL_SERVER_IP>`  with the Private IPs of your Consul nodes in the `consul_client` upstart script.
 
 Step 2: Build an MongoDB AMI
 ---------------------
