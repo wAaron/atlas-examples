@@ -20,5 +20,5 @@ tar xzf consul-template_0.6.5_linux_amd64.tar.gz
 sudo mv consul-template_0.6.5_linux_amd64/consul-template /usr/bin
 sudo rmdir consul-template_0.6.5_linux_amd64
 
-# consul template upstart for haproxy
+# consul template upstart for mysql
 sudo cp /ops/upstart/mysql_consul_template.conf /etc/init/mysql_consul_template.conf
