@@ -45,7 +45,7 @@ Step 2: Build an HAProxy AMI
 
 Step 3: Build a Node.js AMI
 -------------------
-1. Build an AMI with Node.js installed. To do this, run `packer push -create nodejs.json` in the Node.js packer directory. This will send the build configuration to Atlas so it can build your HAProxy AMI remotely. 
+1. Build an AMI with Node.js installed. To do this, run `packer push -create nodejs.json` in the Node.js packer directory. This will send the build configuration to Atlas so it can build your Node.js AMI remotely. 
 2. View the status of your build in the Operations tab of your [Atlas account](atlas.hashicorp.com/operations).
 3. This creates an AMI with Node.js installed, and now you need to send the actual Node.js application code to Atlas and link it to the build configuration. To do this, simply run `vagrant push` in the app directory. This will send your Node.js application, which is just the `server.js` file for now. Then link the Node.js application with the Node.js build configuration by clicking on your build configuration, then 'Links' in the left navigation. Complete the form with your username, 'nodejs' as the application name, and '/app' as the destination path.
 4. Now that your application and build configuration are linked, simply rebuild the Node.js configuration and you will have a fully-baked AMI with Node.js installed and your application code in place.
