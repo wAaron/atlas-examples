@@ -107,3 +107,7 @@ Final Step: Test LAMP
 1. Navigate to the Public IP of your Apache+PHP server. Run `terraform show` to easily find this information. You should see an Apache welcome page. Navigate to <public_ip>/test.php to show your application code.
 2. That's it! You just deployed a LAMP stack. Now whenever you make a change, just run `vagrant push` in the app folder to build new artifacts, then run `terraform apply` in the ops/terraform folder to deploy them out.
 3. Navigate to the [Runtime tab](https://atlas.hashicorp.com/runtime) in your Atlas account and click on the newly created infrastructure. You'll now see the real-time health of all your nodes and services!
+
+Local Development
+------------------
+This project uses [Scotch Box](https://box.scotch.io/) for local development with [Vagrant](https://vagrantup.com). 
