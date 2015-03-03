@@ -5,7 +5,7 @@ This repository and walkthrough guides you through deploying an [Eve Python REST
 General setup
 -------------
 1. Clone this repository
-2. Create an Atlas account
+2. Create an [Atlas account](https://atlas.hashicorp.com/account/new?utm_source=github&utm_medium=examples&utm_campaign=eve)
 3. Generate an [Atlas token](https://atlas.hashicorp.com/settings/tokens) and save as environment variable. 
 `export ATLAS_TOKEN=<your_token>`
 4. In the Vagrantfile, Packer files `eve.json` and `mongo.json`, Terraform file `infrastructure.tf`, and Consul upstart script `consul_client.conf` you need to replace all instances of `<username>`,  `YOUR_ATLAS_TOKEN`, `YOUR_SECRET_HERE`, and `YOUR_KEY_HERE` with your Atlas username, Atlas token, and AWS keys.

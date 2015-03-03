@@ -9,7 +9,7 @@ To bring up a development environment, run `vagrant up` in the top directory whi
 The deployment process has three steps. The first step is sending the application code to Atlas so it can be packaged as a deployable artifact. The second step is configuring the deployable artifact by installing required packages such as Apache, MySQL, etc. The final step is configuring the infrastructure which the artifact is deployed onto. In this example, we'll configure two t2.micro instances on AWS behind a load balancer. 
 
 ### Create an Atlas account
-If you haven't already, you must create an [Atlas account](https://atlas.hashicorp.com) in order to securely deploy to AWS. Then generate an Atlas token in your [account settings](https://atlas.hashicorp.com/settings/tokens) and set it as an environment variable in order authorize communications with Atlas. 
+If you haven't already, you must create an [Atlas account](https://atlas.hashicorp.com/account/new?utm_source=github&utm_medium=examples&utm_campaign=django) in order to securely deploy to AWS. Then generate an Atlas token in your [account settings](https://atlas.hashicorp.com/settings/tokens) and set it as an environment variable in order authorize communications with Atlas. 
 
 `$ export ATLAS_TOKEN=YOUR_TOKEN`
 
