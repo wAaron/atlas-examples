@@ -4,7 +4,7 @@ This repository and walkthrough guides you through deploying MongoDB on AWS.
 
 General setup
 -------------
-1. Create an Atlas account
+1. Create an [Atlas account](https://atlas.hashicorp.com/account/new?utm_source=github&utm_medium=examples&utm_campaign=mongo)
 2. Generate an [Atlas token](https://atlas.hashicorp.com/settings/tokens) and save as environment variable. `export ATLAS_TOKEN=<your_token>`
 3. Clone this repository
 4. In the Packer file `mongo.json`, Terraform file `mongo.tf`, and Consul upstart script `consul_client.conf` you need to replace all instances of `<username>`,  `YOUR_ATLAS_TOKEN`, `YOUR_SECRET_HERE`, and `YOUR_KEY_HERE` with your Atlas username, Atlas token, and AWS keys.

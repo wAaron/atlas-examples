@@ -6,7 +6,7 @@ This is a repository for Atlas examples.
 Authentication
 --------------
 You will need an access token, which can be generated in your account page in
-[Atlas](https://atlas.hashicorp.com/settings/tokens). All
+[Atlas](https://atlas.hashicorp.com/settings/tokens?utm_source=github&utm_medium=examples&utm_campaign=readme). All
 CLIs and libraries respect the `ATLAS_TOKEN` environment variable, so you can
 add the token to your `.shellrc`.
 
