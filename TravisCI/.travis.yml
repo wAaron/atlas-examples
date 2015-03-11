@@ -1,0 +1,35 @@
+env:
+    global:
+        - PROJECT_ROOT=`pwd`
+        - secure: ".... encrypted data ...."
+
+
+before_install:
+    - sudo apt-get -y update
+    - echo "Update packages and configuration."
+
+install:
+    - echo "Install Build Dependencies Here"
+
+
+before_script:
+    - echo "Navigate to Test Suite"
+
+
+script:
+    - echo "Run Tests Here"
+
+
+after_success:
+    - echo "Build Successful"
+    - sudo apt-get -y install golang
+    - mkdir -p $PROJECT_ROOT/mygo
+    - export GOPATH=$PROJECT_ROOT/mygo
+    - go get github.com/hashicorp/atlas-upload-cli
+    - cd $GOPATH/src/github.com/hashicorp/atlas-upload-cli/
+    - make
+    - ./bin/atlas-upload <username>/app $PROJECT_ROOT/app
+
+branches:
+    only:
+        - master
