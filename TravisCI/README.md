@@ -1,23 +1,19 @@
-Configure Travis CI to push application code to ATLAS
-===================
-This repository and walkthrough guides you through configuring Travis CI to push application code to ATLAS on successful build.
+Configure Travis CI to push application code to Atlas
+===
+This repository and walkthrough guides you through configuring [Travis CI](https://travis-ci.com/) to push application code to Atlas.
 
 
-Introduction and Configuring TRAVIS
-------------------------------------
-This guide assumes you know how to deploy a simple getting-started application on ATLAS and link the corresponding infrastructure, for more information see [Getting Started Guide](https://atlas.hashicorp.com/help/getting-started/getting-started-overview)
+Introduction and Configuring Travis CI
+---
+This walkthrough assumes you know how to deploy a simple application with Atlas. For more information see our [Getting Started Guide](https://atlas.hashicorp.com/help/getting-started/getting-started-overview)
 
-After you have successfully deployed the getting started application, there is always a need for continuous delivery of latest application code, in most of the cases whenever the code is pushed to master branch or after a successful build on Travis CI. The application code on ATLAS needs to be updated and we achieve this by pushing the latest code to ATLAS using the [atlas-upload-cli](https://github.com/hashicorp/atlas-upload-cli)
+By sending application code from Travis to Atlas, you can complete a full continuous delivery lifecycle. An example developer workflow could be `git merge master > automatically start Travis tests > automatically build new AMIs with Atlas > automatically deploy application with Atlas`. From a developer point of view, this integration automates the full build and deploy process. From an operator point of view, Atlas can be configured to accept code from any location, then provision and deploy a new application version.  
 
-The atlas-upload-cli uses `ATLAS_TOKEN` as an environment variable for authentication and application code can be pushed using `atlas-upload <username>/app /path/to/app`.
-`<username>` here is your username for ATLAS account and not the GitHub one.
+Travis is able to push application code to Atlas by using the [Atlas Upload CLI](https://github.com/hashicorp/atlas-upload-cli). This requires that you have an Atlas username and Atlas authorization token. Create an [Atlas account here](https://atlas.hashicorp.com/account/new?utm_source=github&utm_medium=examples&utm_campaign=lamp), and then generate an [Atlas token](https://atlas.hashicorp.com/settings/tokens).
 
-Instructions for writing .travis.yml file
-------------------------------------------
-
-Step 1: Encrypt ATLAS Token
-----------------------------
-Since atlas-upload-cli uses `ATLAS_TOKEN` as an environment variable, this needs to be encrypted to be used in Travis CI. Travis provides a default method to encrypt keys so that they can be used as environment variables. For more information see [Encryption keys](http://docs.travis-ci.com/user/encryption-keys/).
+Step 1: Encrypt Atlas Token
+---
+The Atlas Upload CLI uses an `ATLAS_TOKEN` as an environment variable for authorization. This needs to be encrypted to be used with Travis CI. For more information see the [encryption keys](http://docs.travis-ci.com/user/encryption-keys/) section of the Travis documentation.
 
 ```
 gem install travis
@@ -30,8 +26,8 @@ secure: ".... encrypted data ...."
 Now you can place it in the `.travis.yml` file.
 
 Step 2: Download and build atlas-upload-cli
--------------------------------------------
-We will be building `atlas-upload-cli` from its `go` source in this example  like:
+---
+We will be building `atlas-upload-cli` from its `go` source in this example:
 
 ```
 after_success:
@@ -45,22 +41,11 @@ after_success:
 
 ```
 
-Step 3: Push application code to ATLAS on successful build
----------------------
-Depending on the requirements of your continous deployment architecture you can configure TRAVIS to push code. Here we will show how to push code to ATLAS which has been succesfully build by Travis after commiting to `master` branch. More information for configuring build can be found in [Travis Documentation](http://docs.travis-ci.com/user/build-configuration/).
+Step 3: Push application code to Atlas on successful build of master
+---
+Replace the ATLAS_USERNAME and ATLAS_APP with your Atlas username and application name.
 
-```
-branches:
-    only:
-    - master
-```
-
-Replace the `<username>` and app with your ATLAS username and application name in push command.
-```
-- ./bin/atlas-upload <username>/app $PROJECT_ROOT/app
-```
-
-The final `.travis.yml` would look like:
+The final `.travis.yml` will look like:
 ```
 env:
     global:
@@ -92,7 +77,7 @@ after_success:
     - go get github.com/hashicorp/atlas-upload-cli
     - cd $GOPATH/src/github.com/hashicorp/atlas-upload-cli/
     - make
-    - ./bin/atlas-upload <username>/app $PROJECT_ROOT/app
+    - ./bin/atlas-upload ATLAS_USERNAME/ATLAS_APP $PROJECT_ROOT/app
 
 branches:
     only:
@@ -101,5 +86,4 @@ branches:
 
 Final Step: See the latest code
 --------------------------------
-That's it ! You have finally linked Travis CI to ATLAS for continous delivery depending on your build configuration settings.
-You can see the latest version of your application code by navigating to the application in [development tab](https://atlas.hashicorp.com/development).
+That's it! You have linked Travis CI to Atlas for continous delivery. You can see the latest version of your application by navigating to the application in [development tab](https://atlas.hashicorp.com/development).
