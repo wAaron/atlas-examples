@@ -8,7 +8,7 @@ General setup
 2. Create an [Atlas account](https://atlas.hashicorp.com/account/new?utm_source=github&utm_medium=examples&utm_campaign=consul)
 3. Generate an [Atlas token](https://atlas.hashicorp.com/settings/tokens) and save as environment variable. 
 `export ATLAS_TOKEN=<your_token>`
-4. In the Packer files `consul.json` and Terraform file `consul.tf` you need to replace all instances of `<username>`, `YOUR_ATLAS_TOKEN`, `YOUR_SECRET_HERE`, and `YOUR_KEY_HERE` with your Atlas username, token, and AWS keys. 
+4. In the Packer file `consul.json`, Terraform file `consul.tf`, and Consul upstart script `consul_bootstrap.conf` you need to replace all instances of `<username>`, `YOUR_ATLAS_TOKEN`, `YOUR_SECRET_HERE`, and `YOUR_KEY_HERE` with your Atlas username, token, and AWS keys. 
 
 Introduction and Configuring Consul
 ------------------------------------
