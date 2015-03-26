@@ -1,6 +1,6 @@
-SSH for debugging
+Setup SSH Access for AWS instances
 ===
-This walkthrough will help you generate an rsa key pair and ssh into aws machines created automatically using terraform. All the steps mentioned below assume you to be in the directory which has all the terraform `*.tf` files. Its always advised to delete ssh keys after debugging to prevent any security threats.
+This walkthrough will help you generate an rsa key pair and ssh into AWS machines created automatically using terraform. All the steps mentioned below assume you to be in the directory which has all the terraform `*.tf` files. Its always advised to delete ssh keys after debugging to prevent any security threats.
 
 Generate an ssh key pair
 --------------
