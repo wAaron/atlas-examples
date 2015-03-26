@@ -1,1 +1,0 @@
-sudo mv /ops/files/authorized_keys ~/.ssh/authorized_keys
