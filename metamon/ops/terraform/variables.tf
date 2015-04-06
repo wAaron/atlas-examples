@@ -17,8 +17,8 @@ variable "aws_secret_key" {}
 variable "region" {
     default = "us-east-1"
 }
-variable "ec2_key_name" {
-    default = "YOUR_EC2_KEY_NAME"
+variable "aws_key_pair_name" {
+    default = "YOUR_AWS_KEY_PAIR_NAME"
 }
 variable "availability_zone" {
     default = "us-east-1a"

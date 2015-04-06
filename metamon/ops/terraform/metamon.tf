@@ -33,7 +33,7 @@ resource "aws_instance" "metamon" {
     ami = "${atlas_artifact.metamon.metadata_full.region-us-east-1}"
     instance_type = "t2.micro"
     security_groups = ["${aws_security_group.allow_all.name}"]
-    key_name = "${var.ec2_key_name}"
+    key_name = "${var.aws_key_pair_name}"
     availability_zone = "${var.availability_zone}"
     count = 1
 
@@ -51,7 +51,7 @@ resource "aws_instance" "consul" {
     ami = "${atlas_artifact.consul.metadata_full.region-us-east-1}"
     instance_type = "t2.micro"
     security_groups = ["${aws_security_group.allow_all.name}"]
-    key_name = "${var.ec2_key_name}"
+    key_name = "${var.aws_key_pair_name}"
     availability_zone = "${var.availability_zone}"
     count = 1
 
