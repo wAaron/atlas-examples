@@ -1,6 +1,7 @@
-/* These can be passed in through the command line by
-referencing environment variables, or you can use
-a terraform.tfvars file, see below example
+/* These variables can be passed in through the command line by
+referencing environment variables (below example), or you can use
+a terraform.tfvars file and terraform will grab these vars from there
+and all you have to run is 'terraform apply'
 
 terraform apply \
     -var "atlas_username=${ATLAS_USERNAME}" \
