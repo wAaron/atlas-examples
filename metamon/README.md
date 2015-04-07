@@ -27,15 +27,15 @@ Step 1: Build a Consul Server AMI
 -------------------------
 1. For Consul to work with this setup, we first need to create a Consul server AMI that will be used to build our Consul cluster. To do this, run `packer push -create consul.json` in the ops directory. This will send the build configuration to Atlas so it can build your Consul server AMI remotely. You can follow [this walkthrough](https://github.com/hashicorp/atlas-examples/tree/master/consul) to get a better understanding of how we implemented this. We generally recommend at least a 3 node Consul cluster, but for this example we are just creating 1.
 2. View the status of your build by going to the Builds tab of your [Atlas account](https://atlas.hashicorp.com/builds) and clicking on the 'consul' build configuration under 'Build Configurations' in the left navigation.
-  1. ![Builds](/screenshots/builds.png?raw=true)
-  2. ![Consul Build Configuration](/screenshots/consul_build_conf.png?raw=true)
+  1. ![Builds](screenshots/builds.png?raw=true)
+  2. ![Consul Build Configuration](screenshots/consul_build_conf.png?raw=true)
 
 Step 2: Build a Metamon AMI
 -------------------------
 1. Build an AMI using Metamon's Ansible provisioning that will create a functioning web app using Django, Gunicorn, Nginx, PostgreSQL and a few other [Metamon features](https://github.com/tryolabs/metamon#features). To do this, run `packer push -create site.json` in the ops directory. This will send the build configuration to Atlas so it can build your Metamon AMI remotely.
 2. View the status of your build by going to the Builds tab of your [Atlas account](https://atlas.hashicorp.com/builds) and clicking on the 'metamon' build configuration under 'Build Configurations' in the left navigation.
-  1. ![Builds](/screenshots/build.png?raw=true)
-  2. ![Metamon Build Configuration](/screenshots/metamon_build_conf.png?raw=true)
+  1. ![Builds](screenshots/build.png?raw=true)
+  2. ![Metamon Build Configuration](screenshots/metamon_build_conf.png?raw=true)
 3. This creates an AMI with a functioning Django web app that uses Consul for service discovery/configuration and health checking.
 
 _\** The Packer build will fail saying `* Bad source '/packer/app': stat /packer/app: no such file or directory
@@ -44,9 +44,9 @@ _\** The Packer build will fail saying `* Bad source '/packer/app': stat /packer
 Step 3: Link your application code
 -------------------------
 1. You'll now want to link up your actual Metamon application code to Atlas so that when you make any code changes, you can `vagrant push` them to Atlas and it will rebuild your AMI automatically. To do this, simply run `vagrant push` in the root directory of your project where the Vagrant file is. This will send your Metamon application to Atlas, which is everything in [/app](https://github.com/hashicorp/atlas-examples/tree/master/metamon/app). Then, link the application with the build configuration by clicking on your Metamon build configuration under the ['Builds' tab of your Atlas account](https://atlas.hashicorp.com/builds), then 'Links' in the left navigation. Complete the form with your username, `metamon` as the application name, and `/app` as the destination path.
-  1. ![Links](/screenshots/links.png?raw=true)
+  1. ![Links](screenshots/links.png?raw=true)
 2. Now that your application and build configuration are linked, click 'Rebuild' on the latest Metamon build configuration in the ['Builds' tab of your Atlas account](https://atlas.hashicorp.com/builds) and you will have a fully-baked AMI of your Django web app.
-  1. ![Rebuild](/screenshots/links.png?raw=true)
+  1. ![Rebuild](screenshots/links.png?raw=true)
 
 _\** `packer push site.json` will rebuild the AMI with the application code that was last pushed to Atlas whereas `vagrant push` will push your latest application code to Atlas and THEN rebuild the AMI. When you want any new modifications of your application code to be included in the AMI, do a `vagrant push`, otherwise, if you're just updating the packer template but no application code has changed, do a `packer push site.json`._
 
@@ -54,15 +54,15 @@ Step 4: Deploy Metamon Web App and Consul Cluster
 --------------------------
 1. To deploy your Metamon web app and Consul cluster, all you need to do is run `terraform apply` in the [ops/terraform](https://github.com/hashicorp/atlas-examples/tree/master/metamon/ops/terraform) folder.
 2. You should see 2 new boxes spinning up in EC2, one named metamon_1 which is your web app, and one named consul_1 which is your consul cluster (of 1 for now).
-  1. ![AWS](/screenshots/aws_ec2_instances.png?raw=true)
+  1. ![AWS](screenshots/aws_ec2_instances.png?raw=true)
 
 Final Step: Test Metamon
 ------------------------
 1. Once the metamon_1 box is running, go to its public ip and you should see a website that reads "Hello, Atlas!"
-  1. ![Hello, Atlas!](/screenshots/hello_atlas.png?raw=true)
+  1. ![Hello, Atlas!](screenshots/hello_atlas.png?raw=true)
 2. Navigate to the [Environments tab](https://atlas.hashicorp.com/environment) in your Atlas account and click on the newly created infrastructure. You'll now see the real-time health of all your nodes and services!
-  1. ![Environments](/screenshots/environments.png?raw=true)
-  2. ![Metamon Infrastructure](/screenshots/metamon_infrastructure.png?raw=true)
+  1. ![Environments](screenshots/environments.png?raw=true)
+  2. ![Metamon Infrastructure](screenshots/metamon_infrastructure.png?raw=true)
 3. Change your app code by modifying [/app/app/views.py](https://github.com/hashicorp/atlas-examples/tree/master/metamon/app/app/views.py) to say "Hello, World!" instead of "Hello, Atlas!".
 4. Run `vagrant push` in your projects root directory (where the Vagrantfile is). Once the packer build finishes (view this in ['Builds' tab of your Atlas account](https://atlas.hashicorp.com/builds)), run `terraform apply` in the [ops/terraform/](https://github.com/hashicorp/atlas-examples/tree/master/metamon/ops/terraform) directory and your new web app will be deployed!
 
