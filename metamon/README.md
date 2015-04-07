@@ -1,82 +1,58 @@
-#メタモン (Metamon)
-```
-      /~\_.-~-._,--.._
-     |                ~-.._
-      |     .     .        \
-      |                    /
-      |     --._..'       | \
-      /                      \
-     |                        |
-     |                        \
-     /                         |
-     \_.-._  __...___.._______/
-           ~~
-```
+Metamon
+===================
+This repository and walkthrough guides you through deploying the [Metamon Project](https://github.com/tryolabs/metamon) via Atlas on AWS.
 
-Metamon is a Vagrantfile combined with a set of Ansible Playbooks which can be used to quickly start a new Django project.
+General setup
+-------------
+1. Download and install [Virtualbox](https://www.virtualbox.org/wiki/Downloads), [Vagrant](https://www.vagrantup.com/downloads.html), [Packer](https://www.packer.io/downloads.html), and [Terraform](https://www.terraform.io/downloads.html)
+2. Clone this repository
+3. Create an [Atlas account](https://atlas.hashicorp.com/account/new?utm_source=github&utm_medium=examples&utm_campaign=metamon) and save your Atlas username as an environment variable
+`$ export ATLAS_USERNAME=<your_atlas_username>`
+4. Generate an [Atlas token](https://atlas.hashicorp.com/settings/tokens) and save as an environment variable
+`$ export ATLAS_TOKEN=<your_atlas_token>`
+5. Get your [AWS access and secret keys](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html) and save as environment variables
+`$ export AWS_ACCESS_KEY=<your_aws_access_key>`
+`$ export AWS_SECRET_KEY=<your_aws_secret_key>`
+6. In the ['Vagrantfile'](https://github.com/hashicorp/atlas-examples/tree/master/metamon/Vagrantfile), Packer files ['ops/site.json'](https://github.com/hashicorp/atlas-examples/tree/master/metamon/ops/site.json) and ['ops/consul.json'](https://github.com/hashicorp/atlas-examples/tree/master/metamon/ops/consul.json), Terraform files '[ops/terraform/variables.tf'](https://github.com/hashicorp/atlas-examples/tree/master/metamon/ops/terraform/variables.tf) and '[ops/terraform/terraform.tfvars'](https://github.com/hashicorp/atlas-examples/tree/master/metamon/ops/terraform/terraform.tfvars), and Consul upstart scripts ['ops/upstart/consul_client.conf'](https://github.com/hashicorp/atlas-examples/tree/master/metamon/ops/upstart/consul_client.conf) and ['ops/upstart/consul_server.conf'](https://github.com/hashicorp/atlas-examples/tree/master/metamon/ops/upstart/consul_server.conf) you need to replace all instances of `YOUR_ATLAS_USERNAME`, `YOUR_ATLAS_TOKEN`, `YOUR_AWS_ACCESS_KEY`, `YOUR_AWS_SECRET_KEY`, and `YOUR_AWS_KEY_PAIR_NAME` with your Atlas username, Atlas token, AWS Access Key Id, AWS Secret Access key, and [AWS key pair name](http://docs.aws.amazon.com/gettingstarted/latest/wah/getting-started-prereq.html)
 
+Introduction and Configuring Metamon
+-----------------------------------------------
+Before jumping into configuration steps, it's helpful to have a mental model for how the Atlas workflow fits in.
 
-##Motivation
-Setting up a development environment when starting a new project always turns out to be a tiresome and time consuming task. Metamon is a collection of Ansible Playbooks that aims to correct this by providing a standarized, automated and generic\* environment (both for development and production). This way projects can be started a lot faster by just being able to jump directly into development.
+Metamon's [motivation](https://github.com/tryolabs/metamon#motivation) is to make it dead simple to setup a standardized, automated, and generic environment using Ansible playbooks. Metamon will [provision a Vagrant box](https://github.com/tryolabs/metamon#features) to be a development ready web app using Django, Gunicorn, Nginx, and PostgreSQL. Take a look at the [Metamon repository](https://github.com/tryolabs/metamon) for more context in how the provisioning works.
 
-Although Metamon is easily extensible by adding new Ansible roles, it is a better fit for people who use Django + Gunicorn + Nginx + PostgreSQL.
+The files in this repository are designed to make it just as simple to move from development to production by safely deploying and managing your infrastructure on AWS using the Atlas workflow. If you haven't deployed an app with [Atlas](https://atlas.hashicorp.com) before, we recommend you start with the [introductory tutorial](https://atlas.hashicorp.com/help/getting-started/getting-started-overview). Atlas by [HashiCorp](https://hashicorp.com) is a platform to develop, deploy, and maintain applications on any infrastructure provider.
 
-_\* generic in the context of Django applications._
+Step 1: Build a Consul Server AMI
+1. For Consul to work with this setup, we first need to create a Consul server AMI that will be used to build our Consul cluster. To do this, run `packer push -create consul.json` in the ops directory. This will send the build configuration to Atlas so it can build your Consul server AMI remotely. You can follow [this walkthrough](https://github.com/hashicorp/atlas-examples/tree/master/consul) to get a better understanding of how we implemented this. We generally recommend at least a 3 node Consul cluster, but for this example we are just creating 1.
+2. View the status of your build by going to the Operations tab of your [Atlas account](https://atlas.hashicorp.com/operations) and clicking on the 'consul' build configuration under 'Build Configurations' in the left navigation.
 
+Step 2: Build a Metamon AMI
+1. Build an AMI using Metamon's Ansible provisioning that will create a functioning web app using Django, Gunicorn, Nginx, PostgreSQL and a few other [Metamon features](https://github.com/tryolabs/metamon#features). To do this, run `packer push -create site.json` in the ops directory. This will send the build configuration to Atlas so it can build your Metamon AMI remotely.
+2. View the status of your build by going to the Operations tab of your [Atlas account](https://atlas.hashicorp.com/operations) and clicking on the 'metamon' build configuration under 'Build Configurations' in the left navigation.
+3. This creates an AMI with a functioning Django web app that uses Consul for service discovery/configuration and health checking.
 
-##Features
-Metamon will:
-* Create an Ubuntu 14.04 machine.
-* Set-up basic Operating system dependencies.
-* Set-up a Virtualenv and automatically install dependencies.
-* Set-up Supervisor, PostgreSQL 9.3, Gunicorn and Nginx.
-* Start a new Django project if it's needed.
-* Automatically activate a virtualenv and `cd` to the project's directory when logging in during development.
-* Use separate requirements files for faster deploys.
-* Separate settings file for unit testing with coverage and customized settings to make testing faster.
+_\** The Packer build will fail until you complete the next step as there is a [provisioner](https://github.com/hashicorp/atlas-examples/tree/master/metamon/ops/site.json#L65) in the ['ops/site.json'](https://github.com/hashicorp/atlas-examples/tree/master/metamon/ops/site.json) Packer template that is expecting the application to already be linked. If you take that provisioner out, it would work, but you're just going to need it back in there after you link your application in the next step._
 
-... and more.
+Step 3: Link your application code
+1. You'll now want to link up your actual Metamon application code to Atlas so that when you make any code changes, you can `vagrant push` them to Atlas and it will rebuild your AMI automatically. To do this, simply run `vagrant push` in the root directory of your project where the Vagrant file is. This will send your Metamon application to Atlas, which is everything in ['/app'](https://github.com/hashicorp/atlas-examples/tree/master/metamon/app'). You will see your application show up under 'Applications' in the ['Development' tab of your Atlas account](https://atlas.hashicorp.com/development). Then, link the Metamon application with the Metamon build configuration by clicking on your build configuration in the ['Operations' tab of your Atlas account](https://atlas.hashicorp.com/operations), then 'Links' in the left navigation. Complete the form with your username, `metamon` as the application name, and `/app` as the destination path.
+2. Now that your application and build configuration are linked, click 'Rebuild' on the latest Metamon build configuration in the ['Operations' tab of your Atlas account](https://atlas.hashicorp.com/operations) and you will have a fully-baked AMI of your Django web app.
 
-##Installation
-1. Download and install [Virtualbox](https://www.virtualbox.org/wiki/Downloads).
-2. Download and install [Vagrant](https://www.vagrantup.com/downloads.html).
-3. Install [Ansible](http://www.ansible.com/home) with pip: `pip install ansible`.
-4. Copy the Metamon files to your project's root directory (or to a new one if you have not started yet) and customize.
-5. Create a new virtual machine by running `vagrant up` from your project's root directory.
-6. Deploy a new virtual machine by running the `deploy_dev.sh` script in the `ops` directory. If you already have your code in there, no project should be created.
+_\** `packer push site.json` will rebuild the AMI with the application code that was last pushed to Atlas whereas `vagrant push` will push your latest application code to Atlas and THEN rebuild the AMI. When you want any new modifications of your application code to be included in the AMI, do a `vagrant push`, otherwise, if you're just updating the packer template but no application code has changed, do a `packer push site.json`._
 
+Step 4: Deploy Metamon Web App and Consul Cluster
+--------------------------
+1. To deploy your Metamon web app and Consul cluster, all you need to do is run `terraform apply` in the ['ops/terraform'](https://github.com/hashicorp/atlas-examples/tree/master/metamon/ops/terraform) folder.
+2. You should see 2 new boxes spinning up in EC2, one named metamon_1 which is your web app, and one named consul_1 which is your consul cluster (of 1 for now).
 
-##Configuration and Customization
-### Configuration
-In the `ops/group_vars` directory are two values on `all.yml` that need to be set before the Playbooks can be run. `project_name` needs to be given the project's name. It will be used for finding the directory containing the Django project (or to create it) and used for pointing to some of the modules (for example urls). `secret_key` needs to also be set and is used in Django's settings file in `SECRET_KEY`.
+Final Step: Test Metamon
+------------------------
+1. Once the metamon_1 box is running, go to its public ip and you should see a website that reads "Hello, Atlas!"
+2. Navigate to the [Runtime tab](https://atlas.hashicorp.com/runtime) in your Atlas account and click on the newly created infrastructure. You'll now see the real-time health of all your nodes and services!
+3. Change your app code by modifying ['/app/app/views.py'](https://github.com/hashicorp/atlas-examples/tree/master/metamon/app/app/views.py) to say "Hello, World!" instead of "Hello, Atlas!".
+4. Run `vagrant push` in your projects root directory (where the Vagrantfile is). Once the packer build finishes (view this in ['Operations' tab of your Atlas account](https://atlas.hashicorp.com/operations)), run `terraform apply` in the 'ops/terraform/' directory and your new web app will be deployed!
 
-If `pull_repo` is defined then `repo_url` must be defined. By default, the `master` branch will be used.
+Cleanup
+------------------------
+1. Run `terraform destroy` to tear down any infrastructure you created. If you want to bring it back up, simply run `terraform apply` and it will bring your infrastructure back to the state it was last at.
 
-#### Vagrant
-By default, Vagrant will provide a machine called `dev` that can be reached at `192.168.50.10`. Several ports are forwarded:
-* `80` to `8080` (for Nginx).
-* `8000` to `8000`.
-* `9000` to `9000` (for Gunicorn).
-*
-The directory where the Vagrantfile is placed is shared with the virtual machine via the `/vagrant/` directory. All of this can be changed by editing `Vagrantfile`.
-
-For more information on what's installed please take a look at the `ROLES.md` file.
-
-#### Requirements
-The requirements for the Django application will also be installed automatically, however, they are split into three different files. There are also settings that define which requirements are installed during deployment.
-* `requirements.txt` should hold the packages needed to run the Django application. It is automatically installed with the `application` role.
-* `test_requirements.txt` should hold packages needed for running unit tests but not required by the application. It is automatically installed with the `testing` role.
-* `dev_requirements.txt` should hold packages needed only when developing (ipdb for example). Installation is marked by `install_development_requirements` and it is automatically set to `Yes` when the `development` role is selected.
-
-#### Settings and settings for testing
-Settings are automatically generated by the `/ops/roles/application/templates/django/settings*.py.j2` files. Two settings files are generated, one for the regular Django settings and one for running the unit tests. You probably want to run tests like so:
-
-`python manage.py test --settings=project_name.settings_test`
-
-### .gitignore
-Keep in mind that the `.gitignore` included in this repository is rather bare. It is recommended that you add rules for ignoring IDE files and generated binary files (for example SQLite databases). It is also a good idea to ignore the `<project name>/static/` (collectstatic) directory.
-
-## Contributing
-So far, Metamon has been an internal tool, and has been maintained in the little free time available to us.  Bugs may appear, and there is a lot of room for improvement.
-
-If you happen to come across a bug, please create an issue providing as much information as possible. If you want to help, fork the project and submit your Pull Requests. All contributions are most welcome.
