@@ -48,9 +48,9 @@ Step 2: Build a Metamon AMI
 3. This creates an AMI with a functioning Django web app that uses Consul for service discovery/configuration and health checking.
 
 _\** The Packer build will fail saying `* Bad source '/packer/app': stat /packer/app: no such file or directory
-` until you complete the next step as there is a [provisioner](ops/site.json#L65) in the [ops/site.json](ops/site.json) Packer template that is expecting the application to already be linked. If you take that provisioner out, it would work, but you're just going to need it back in there after you link your application in the next step._
+` until you complete the next step as there is a [provisioner in the ops/site.json](ops/site.json#L65) Packer template that is expecting the application to already be linked. If you take that provisioner out, it would work, but you're just going to need it back in there after you link your application in the next step._
 
-Step 3: Link your application code
+Step 3: Link your Application Code
 -------------------------
 1. You'll now want to link up your actual Metamon application code to Atlas so that when you make any code changes, you can `vagrant push` them to Atlas and it will rebuild your AMI automatically. To do this, simply run `vagrant push` in the [root]() directory of your project where the Vagrant file is. This will send your Metamon application code to Atlas, which is everything in the [app](app) directory. Link the metamon application and build configuration by clicking on your metamon build configuration under the [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account, then "Links" in the left navigation. Complete the form with your Atlas username, `metamon` as the application name, and `/app` as the destination path.
   1. ![Links](screenshots/links.png?raw=true)
@@ -69,11 +69,11 @@ Final Step: Test Metamon
 ------------------------
 1. Once the "metamon_1" box is running, go to its public ip and you should see a website that reads "Hello, Atlas!"
   1. ![Hello, Atlas!](screenshots/hello_atlas.png?raw=true)
-2. Navigate to the [Environments tab](https://atlas.hashicorp.com/environment) of your Atlas account and click on the newly created "metamon" environment. You'll now see the real-time health of all your nodes and services!
+2. Navigate to the [Environments tab](https://atlas.hashicorp.com/environments) of your Atlas account and click on the newly created "metamon" environment. You'll now see the real-time health of all your nodes and services!
   1. ![Environments](screenshots/environments.png?raw=true)
   2. ![Metamon Infrastructure](screenshots/metamon_infrastructure.png?raw=true)
-3. Change your app code by modifying [app/app/views.py](app/app/views.py) to say "Hello, World!" instead of "Hello, Atlas!".
-4. Run `vagrant push` in your projects root directory (where the Vagrantfile is). Once the packer build finishes creating the new AMI (view this in [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account), run `terraform apply` in the [ops/terraform](ops/terraform) directory and your new web app will be deployed!
+3. Change your app code by modifying [app/app/views.py](app/app/views.py#L6) to say "Hello, World!" instead of "Hello, Atlas!".
+4. Run `vagrant push` in your projects [root]() directory (where the Vagrantfile is). Once the packer build finishes creating the new AMI (view this in [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account), run `terraform apply` in the [ops/terraform](ops/terraform) directory and your newly updated web app will be deployed!
 
 Cleanup
 ------------------------
