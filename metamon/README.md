@@ -6,11 +6,11 @@ General setup
 -------------
 1. Download and install [Virtualbox](https://www.virtualbox.org/wiki/Downloads), [Vagrant](https://www.vagrantup.com/downloads.html), [Packer](https://www.packer.io/downloads.html), and [Terraform](https://www.terraform.io/downloads.html)
 2. Clone this repository
-3. Create an [Atlas account](https://atlas.hashicorp.com/account/new?utm_source=github&utm_medium=examples&utm_campaign=metamon) and save your Atlas username as an environment variable
+3. Create an [Atlas account](https://atlas.hashicorp.com/account/new?utm_source=github&utm_medium=examples&utm_campaign=metamon) and save your Atlas username as an environment variable in your `.bashrc` file
   1. `export ATLAS_USERNAME=<your_atlas_username>`
-4. Generate an [Atlas token](https://atlas.hashicorp.com/settings/tokens) and save as an environment variable
+4. Generate an [Atlas token](https://atlas.hashicorp.com/settings/tokens) and save as an environment variable in your `.bashrc` file
   1. `export ATLAS_TOKEN=<your_atlas_token>`
-5. Get your [AWS access and secret keys](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html) and save as environment variables
+5. Get your [AWS access and secret keys](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html) and save as environment variables in your `.bashrc` file
   1. `export AWS_ACCESS_KEY=<your_aws_access_key>`
   2. `export AWS_SECRET_KEY=<your_aws_secret_key>`
 6. In the [Vagrantfile](Vagrantfile), Packer files [ops/site.json](ops/site.json) and [ops/consul.json](ops/consul.json), Terraform files [ops/terraform/variables.tf](ops/terraform/variables.tf) and [ops/terraform/terraform.tfvars](ops/terraform/terraform.tfvars), and Consul upstart scripts [ops/upstart/consul_client.conf](ops/upstart/consul_client.conf) and [ops/upstart/consul_server.conf](ops/upstart/consul_server.conf) you need to replace all instances of `YOUR_ATLAS_USERNAME`, `YOUR_ATLAS_TOKEN`, `YOUR_AWS_ACCESS_KEY`, `YOUR_AWS_SECRET_KEY`, and `YOUR_AWS_KEY_PAIR_NAME` with your Atlas username, Atlas token, [AWS Access Key Id, AWS Secret Access key](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html), and [AWS key pair name](http://docs.aws.amazon.com/gettingstarted/latest/wah/getting-started-prereq.html)
