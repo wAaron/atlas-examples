@@ -53,7 +53,7 @@ resource "aws_instance" "consul" {
     security_groups = ["${aws_security_group.allow_all.name}"]
     key_name = "${var.aws_key_pair_name}"
     availability_zone = "${var.availability_zone}"
-    count = 1
+    count = 3
 
     tags {
       Name = "consul_${count.index+1}"
