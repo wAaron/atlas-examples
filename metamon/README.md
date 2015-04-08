@@ -18,13 +18,13 @@ General setup
 tl;dr
 -----------------------------------------------
 1. Run `packer push -create consul.json` in the [ops](ops) directory.
-2. Navigate to "Variables" in the left navigation of the "consul" build configuration (in [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account), then add the key `AWS_ACCESS_KEY` using your "AWS Access Key Id" as the value and the key `AWS_SECRET_KEY` using your "AWS Secret Access Key" as the value.
-3. Navigate back to "Versions" in the left navigation of the "consul" build configuration, then click "Rebuild" on the latest "consul" build configuration that errored. This one should succeed.
+2. Navigate to "Variables" on the left sidebar of the "consul" build configuration (in [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account), then add the key `AWS_ACCESS_KEY` using your "AWS Access Key Id" as the value and the key `AWS_SECRET_KEY` using your "AWS Secret Access Key" as the value.
+3. Navigate back to "Versions" on the left sidebar of the "consul" build configuration, then click "Rebuild" on the "consul" build configuration that errored. This one should succeed.
 4. Run `packer push -create site.json` in the [ops](ops) directory.
-5. Navigate to "Variables" in the left navigation of the "metamon" build configuration, then add the key `AWS_ACCESS_KEY` using your "AWS Access Key Id" as the value and the key `AWS_SECRET_KEY` using your "AWS Secret Access Key" as the value.
+5. Navigate to "Variables" on the left sidebar of the "metamon" build configuration, then add the key `AWS_ACCESS_KEY` using your "AWS Access Key Id" as the value and the key `AWS_SECRET_KEY` using your "AWS Secret Access Key" as the value.
 6. Run `vagrant push` in the [root]() directory.
-7. Navigate to "Links" in the left navigation of the "metamon" build configuration, then complete the form with your Atlas username, `metamon` as the application name, and `/app` as the destination path.
-8. Navigate back to "Versions" in the left navigation of the "metamon" build configuration, then click "Rebuild" on the latest "metamon" build configuration that errored. This one should succeed.
+7. Navigate to "Links" on the left sidebar of the "metamon" build configuration, then complete the form with your Atlas username, `metamon` as the application name, and `/app` as the destination path.
+8. Navigate back to "Versions" on the left sidebar of the "metamon" build configuration, then click "Rebuild" on the "metamon" build configuration that errored. This one should succeed.
 9. Run `terraform remote config -backend-config="name=YOUR_ATLAS_USERNAME/metamon"` in the [ops/terraform](ops/terraform) directory, replacing `YOUR_ATLAS_USERNAME` with your Atlas username.
 10. Run `terraform apply` in the [ops/terraform](ops/terraform) directory.
 11. Go the the public ip address of the newly created "metamon_1" box and you should see a web page that says "Hello, Atlas!".
@@ -40,31 +40,33 @@ The files in this repository are designed to make it just as simple to move from
 Step 1: Build a Consul Server AMI
 -------------------------
 1. For Consul to work with this setup, we first need to create a Consul server AMI that will be used to build our Consul cluster. To do this, run `packer push -create consul.json` in the [ops](ops) directory. This will send the build configuration to Atlas so it can build your Consul server AMI remotely. You can follow [this walkthrough](https://github.com/hashicorp/atlas-examples/tree/master/consul) to get a better understanding of how we implemented this.
-2. View the status of your build by going to the [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account and clicking on the "consul" build configuration. You will notice that the "consul" build failed immediately with the following error `Build 'amazon-ebs' errored: No valid AWS authentication found`. This is because we need to add our `AWS_ACCESS_KEY` and `AWS_SECRET_KEY` environment variables to the build configuration.
+2. View the status of your build by going to the [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account and clicking on the "consul" build configuration. You will notice that the "consul" build errored immediately with the following error `Build 'amazon-ebs' errored: No valid AWS authentication found`. This is because we need to add our `AWS_ACCESS_KEY` and `AWS_SECRET_KEY` environment variables to the build configuration.
   1. ![Build Configurations](screenshots/builds_configurations_consul.png?raw=true)
   2. ![Consul Build Configuration - Variables Error](screenshots/builds_consul_error_variables.png?raw=true)
-3. Navigate to "Variables" in the left navigation of the "consul" build configuration, then add the key `AWS_ACCESS_KEY` using your "AWS Access Key Id" as the value and the key `AWS_SECRET_KEY` using your "AWS Secret Access Key" as the value.
+3. Navigate to "Variables" on the left sidebar of the "consul" build configuration, then add the key `AWS_ACCESS_KEY` using your "AWS Access Key Id" as the value and the key `AWS_SECRET_KEY` using your "AWS Secret Access Key" as the value.
   1. ![Consul Build Configuration - Variables](screenshots/builds_variables.png?raw=true)
-4. Navigate back to "Versions" in the left navigation of the "consul" build configuration, then click "Rebuild" on the latest "consul" build configuration that errored. This one should succeed.
+4. Navigate back to "Versions" on the left sidebar of the "consul" build configuration, then click "Rebuild" on the "consul" build configuration that errored. This one should succeed.
   1. ![Consul Build Configuration - Rebuild](screenshots/builds_consul_rebuild.png?raw=true)
+  2. ![Consul Build Configuration - Success](screenshots/builds_consul_success.png?raw=true)
 5. This creates a fully-baked Consul server AMI that will be used for your Consul cluster.
 
 Step 2: Build a Metamon AMI
 -------------------------
 1. Build an AMI using Metamon's Ansible provisioning that will create a functioning web app that uses Django, Gunicorn, Nginx, PostgreSQL and a few other [Metamon features](https://github.com/tryolabs/metamon#features). To do this, run `packer push -create site.json` in the [ops](ops) directory. This will send the build configuration to Atlas so it can build your Metamon AMI remotely.
-2. View the status of your build by going to the [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account and clicking on the "metamon" build configuration. You will notice that the "metamon" build configuration failed immediately with the following error `* Bad source '/packer/app': stat /packer/app: no such file or directory`. This is because there is a [provisioner in the ops/site.json](ops/site.json#L65) Packer template that is expecting the application to already be linked. If you take that provisioner out, it would work, but you're just going to need it back in there after you link your application in the next step. This error is fine for now, we will fix in the next step.
+2. View the status of your build by going to the [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account and clicking on the "metamon" build configuration. You will notice that the "metamon" build configuration errored immediately with the following error `* Bad source '/packer/app': stat /packer/app: no such file or directory`. This is because there is a [provisioner in the ops/site.json](ops/site.json#L65) Packer template that is expecting the application to already be linked. If you take that provisioner out, it would work, but you're just going to need it back in there after you link your application in the next step. This error is fine for now, we will be fixing this shortly.
   1. ![Build Configurations](screenshots/builds_configurations_metamon.png?raw=true)
   2. ![Metamon Build Configuration - Application Error](screenshots/builds_metamon_error_application.png?raw=true)
-3. We also need to add our environment variables for the "metamon" build configuration so we don't get the same error we got with the "consul" build configuration. Navigate to "Variables" in the left navigation of the "metamon" build configuration, then add the key `AWS_ACCESS_KEY` using your "AWS Access Key Id" as the value and the key `AWS_SECRET_KEY` using your "AWS Secret Access Key" as the value.
+3. We also need to add our environment variables for the "metamon" build configuration so we don't get the same error we got with the "consul" build configuration. Navigate to "Variables" on the left sidebar of the "metamon" build configuration, then add the key `AWS_ACCESS_KEY` using your "AWS Access Key Id" as the value and the key `AWS_SECRET_KEY` using your "AWS Secret Access Key" as the value.
   1. ![Metamon Build Configuration - Variables](screenshots/builds_variables.png?raw=true)
 
 Step 3: Link your Application Code
 -------------------------
 1. You'll now want to link up your actual Metamon application code to Atlas so that when you make any code changes, you can `vagrant push` them to Atlas and it will rebuild your AMI automatically. To do this, simply run `vagrant push` in the [root]() directory of your project where the Vagrant file is.
-2. This will send your application code to Atlas, which is everything in the [app](app) directory. Link the "metamon" application and build configuration by clicking "Links" in the left navigation of the "metamon" build configuration in the [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account. Complete the form with your Atlas username, `metamon` as the application name, and `/app` as the destination path.
+2. This will send your application code to Atlas, which is everything in the [app](app) directory. Link the "metamon" application and build configuration by clicking "Links" on the left sidebar of the "metamon" build configuration in the [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account. Complete the form with your Atlas username, `metamon` as the application name, and `/app` as the destination path.
   1. ![Metamon Build Configuration - Links](screenshots/builds_metamon_links.png?raw=true)
-3. Now that your "metamon" application and build configuration are linked, click "Rebuild" on the latest "metamon" build configuration that errored. This one should succeed.
+3. Now that your "metamon" application and build configuration are linked, navigate back to "Versions" on the left sidebar of the "metamon" build configuration, then click "Rebuild" on the "metamon" build configuration that errored. This one should succeed.
   1. ![Metamon Build Configuration - Rebuild](screenshots/builds_metamon_rebuild.png?raw=true)
+  2. ![Metamon Build Configuration - Success](screenshots/builds_metamon_success.png?raw=true)
 4. This creates a fully-baked Django web app AMI that uses Consul for service discovery/configuration and health checking.
 
 _\** `packer push site.json` will rebuild the AMI with the application code that was last pushed to Atlas whereas `vagrant push` will push your latest application code to Atlas and THEN rebuild the AMI. When you want any new modifications of your application code to be included in the AMI, do a `vagrant push`, otherwise if you're just updating the packer template and no application code has changed, do a `packer push site.json`._
@@ -73,12 +75,12 @@ Step 4: Deploy Metamon Web App and Consul Cluster
 --------------------------
 1. Run `terraform remote config -backend-config="name=YOUR_ATLAS_USERNAME/metamon"` in the [ops/terraform](ops/terraform) directory, replacing `YOUR_ATLAS_USERNAME` with your Atlas username, to configure [remote state storage](https://www.terraform.io/docs/commands/remote-config.html) for this infrastructure. Now when you run Terraform, the infrastructure state will be saved in Atlas. This keeps a versioned history of your infrastructure.
 2. Run `terraform apply` in the [ops/terraform](ops/terraform) directory to deploy your Metamon web app and Consul cluster.
-3. You should see 2 new boxes spinning up in EC2, one named "metamon_1" which is your web app, and one named "consul_1" which is your Consul cluster (of 1 for now).
+3. You should see 2 new boxes spinning up in EC2, one named "metamon_1" which is your web app, and one named "consul_1" which is your Consul cluster.
   1. ![AWS - Success](screenshots/aws_success.png?raw=true)
 4. Go to the "metamon" environment in the [Environments tab](https://atlas.hashicorp.com/environments) of your Atlas account and you'll now see the real-time health of all your nodes and services!
   1. ![Environments - Metamon](screenshots/environments_metamon.png?raw=true)
   2. ![Metamon Status](screenshots/environments_metamon_status.png?raw=true)
-5. View your infrastructure's state by clicking "Changes" in the left navigation of the "metamon" environment.
+5. View your infrastructure's state by clicking "Changes" on the left sidebar of the "metamon" environment.
   1. ![Metamon Environment - Changes](screenshots/environments_metamon_changes.png?raw=true)
 
 Final Step: Verify it Worked!
