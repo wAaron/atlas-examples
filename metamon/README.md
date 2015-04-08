@@ -25,9 +25,10 @@ tl;dr
 6. Run `vagrant push` in the [root]() directory.
 7. Navigate to "Links" on the left sidebar of the "metamon" build configuration, then complete the form with your Atlas username, `metamon` as the application name, and `/app` as the destination path.
 8. Navigate back to "Versions" on the left sidebar of the "metamon" build configuration, then click "Rebuild" on the "metamon" build configuration that errored. This one should succeed.
-9. Run `terraform remote config -backend-config="name=YOUR_ATLAS_USERNAME/metamon"` in the [ops/terraform](ops/terraform) directory, replacing `YOUR_ATLAS_USERNAME` with your Atlas username.
-10. Run `terraform apply` in the [ops/terraform](ops/terraform) directory.
-11. Go the the public ip address of the newly created "metamon_1" box and you should see a web page that says "Hello, Atlas!".
+9. Wait for both the “consul” and “metamon” builds to complete without errors
+10. Run `terraform remote config -backend-config="name=YOUR_ATLAS_USERNAME/metamon"` in the [ops/terraform](ops/terraform) directory, replacing `YOUR_ATLAS_USERNAME` with your Atlas username.
+11. Run `terraform apply` in the [ops/terraform](ops/terraform) directory.
+12. Go the the public ip address of the newly created "metamon_1" box and you should see a web page that says "Hello, Atlas!".
 
 Introduction and Configuring Metamon
 -----------------------------------------------
@@ -73,15 +74,14 @@ _\** `packer push site.json` will rebuild the AMI with the application code that
 
 Step 4: Deploy Metamon Web App and Consul Cluster
 --------------------------
-1. Run `terraform remote config -backend-config="name=YOUR_ATLAS_USERNAME/metamon"` in the [ops/terraform](ops/terraform) directory, replacing `YOUR_ATLAS_USERNAME` with your Atlas username, to configure [remote state storage](https://www.terraform.io/docs/commands/remote-config.html) for this infrastructure. Now when you run Terraform, the infrastructure state will be saved in Atlas. This keeps a versioned history of your infrastructure.
-2. Run `terraform apply` in the [ops/terraform](ops/terraform) directory to deploy your Metamon web app and Consul cluster.
-3. You should see 2 new boxes spinning up in EC2, one named "metamon_1" which is your web app, and one named "consul_1" which is your Consul cluster.
+1. Wait for both the “consul” and “metamon” builds to complete without errors
+2. Run `terraform remote config -backend-config="name=YOUR_ATLAS_USERNAME/metamon"` in the [ops/terraform](ops/terraform) directory, replacing `YOUR_ATLAS_USERNAME` with your Atlas username, to configure [remote state storage](https://www.terraform.io/docs/commands/remote-config.html) for this infrastructure. Now when you run Terraform, the infrastructure state will be saved in Atlas. This keeps a versioned history of your infrastructure.
+3. Run `terraform apply` in the [ops/terraform](ops/terraform) directory to deploy your Metamon web app and Consul cluster.
+4. You should see 2 new boxes spinning up in EC2, one named "metamon_1" which is your web app, and one named "consul_1" which is your Consul cluster.
   1. ![AWS - Success](screenshots/aws_success.png?raw=true)
-4. Go to the "metamon" environment in the [Environments tab](https://atlas.hashicorp.com/environments) of your Atlas account and you'll now see the real-time health of all your nodes and services!
+5. Go to the "metamon" environment in the [Environments tab](https://atlas.hashicorp.com/environments) of your Atlas account and you'll now see the real-time health of all your nodes and services!
   1. ![Environments - Metamon](screenshots/environments_metamon.png?raw=true)
   2. ![Metamon Status](screenshots/environments_metamon_status.png?raw=true)
-5. View your infrastructure's state by clicking "Changes" on the left sidebar of the "metamon" environment.
-  1. ![Metamon Environment - Changes](screenshots/environments_metamon_changes.png?raw=true)
 
 Final Step: Verify it Worked!
 ------------------------
