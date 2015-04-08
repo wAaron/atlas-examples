@@ -15,7 +15,7 @@ General setup
   2. `export AWS_SECRET_KEY=<your_aws_secret_key>`
 6. In the [Vagrantfile](Vagrantfile), Packer files [ops/site.json](ops/site.json) and [ops/consul.json](ops/consul.json), Terraform files [ops/terraform/variables.tf](ops/terraform/variables.tf) and [ops/terraform/terraform.tfvars](ops/terraform/terraform.tfvars), and Consul upstart scripts [ops/upstart/consul_client.conf](ops/upstart/consul_client.conf) and [ops/upstart/consul_server.conf](ops/upstart/consul_server.conf) you need to replace all instances of `YOUR_ATLAS_USERNAME`, `YOUR_ATLAS_TOKEN`, `YOUR_AWS_ACCESS_KEY`, `YOUR_AWS_SECRET_KEY`, and `YOUR_AWS_KEY_PAIR_NAME` with your Atlas username, Atlas token, [AWS Access Key Id, AWS Secret Access key](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html), and [AWS key pair name](http://docs.aws.amazon.com/gettingstarted/latest/wah/getting-started-prereq.html).
 
-tl;dr
+tl;dr Quick Steps
 -----------------------------------------------
 1. Run `packer push -create consul.json` in the [ops](ops) directory.
 2. Navigate to "Variables" on the left sidebar of the "consul" build configuration (in [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account), then add the key `AWS_ACCESS_KEY` using your "AWS Access Key Id" as the value and the key `AWS_SECRET_KEY` using your "AWS Secret Access Key" as the value.
