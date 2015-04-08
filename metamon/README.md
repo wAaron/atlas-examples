@@ -71,7 +71,7 @@ _\** `packer push site.json` will rebuild the AMI with the application code that
 
 Step 4: Deploy Metamon Web App and Consul Cluster
 --------------------------
-1. Run `terraform remote config -backend-config="name=YOUR_ATLAS_USERNAME/metamon"` in the [ops/terraform](ops/terraform) directory, replacing `YOUR_ATLAS_USERNAME` with your Atlas username, to configure [remote state storage](https://www.terraform.io/docs/commands/remote-config.html) for this infrastructure. This way, your infrastructure state is stored on the remote server rather than just on disk or in version control.
+1. Run `terraform remote config -backend-config="name=YOUR_ATLAS_USERNAME/metamon"` in the [ops/terraform](ops/terraform) directory, replacing `YOUR_ATLAS_USERNAME` with your Atlas username, to configure [remote state storage](https://www.terraform.io/docs/commands/remote-config.html) for this infrastructure. Now when you run Terraform, the infrastructure state will be saved in Atlas. This keeps a versioned history of your infrastructure.
 2. Run `terraform apply` in the [ops/terraform](ops/terraform) directory to deploy your Metamon web app and Consul cluster.
 3. You should see 2 new boxes spinning up in EC2, one named "metamon_1" which is your web app, and one named "consul_1" which is your Consul cluster (of 1 for now).
   1. ![AWS - Success](screenshots/aws_success.png?raw=true)
