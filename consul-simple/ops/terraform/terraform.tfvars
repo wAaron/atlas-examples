@@ -3,13 +3,14 @@ to terraform and ignore it from version control, or just
 pass them in through the command line as noted in variables.tf
 See https://www.terraform.io/intro/getting-started/variables.html */
 
-# Required Credentials
+# Required Variables
 aws_access_key = "YOUR_AWS_ACCESS_KEY"
 aws_secret_key = "YOUR_AWS_SECRET_KEY"
 atlas_username = "YOUR_ATLAS_USERNAME"
 atlas_token = "YOUR_ATLAS_TOKEN"
+atlas_environment = "YOUR_ATLAS_ENVIRONMENT_NAME"
 
-# Optional Configuration - Uncomment and populate the variables
+# Optional Configuration Variables - Uncomment and populate the variables
 # below with your desired configuration to override the defaults
 # in ops/terraform/variables.tf
 # region = "us-east-1"
@@ -17,4 +18,3 @@ atlas_token = "YOUR_ATLAS_TOKEN"
 # instance_type = "t2.micro"
 # availability_zone = "us-east-1a"
 # count = 3
-# atlas_environment = "YOUR_ATLAS_ENVIRONMENT_NAME"

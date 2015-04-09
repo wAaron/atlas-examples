@@ -4,18 +4,20 @@ a terraform.tfvars file and terraform will grab these vars from there
 and all you have to run is 'terraform apply'
 
 terraform apply \
+    -var "aws_access_key=${AWS_ACCESS_KEY}" \
+    -var "aws_secret_key=${AWS_SECRET_KEY}" \
     -var "atlas_username=${ATLAS_USERNAME}" \
     -var "atlas_token=${ATLAS_TOKEN}" \
-    -var "aws_access_key=${AWS_ACCESS_KEY}" \
-    -var "aws_secret_key=${AWS_SECRET_KEY}"
+    -var "atlas_environment=${YOUR_ATLAS_ENVIRONMENT_NAME}"
 
 See https://www.terraform.io/intro/getting-started/variables.html */
 
-# Required Credentials
+# Required Variables
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
 variable "atlas_username" {}
 variable "atlas_token" {}
+variable "atlas_environment" {}
 
 # Optional Configuration Variables
 variable "region" {
@@ -32,7 +34,4 @@ variable "availability_zone" {
 }
 variable "count" {
     default = 3
-}
-variable "atlas_environment" {
-    default = "YOUR_ATLAS_ENVIRONMENT_NAME"
 }
