@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -f "terraform/ssh_keys/consul-key.pem" ] && [ -f "terraform/ssh_keys/consul-key.pub" ]; then
+if [ -s "terraform/ssh_keys/consul-key.pem" ] && [ -s "terraform/ssh_keys/consul-key.pub" ]; then
     echo Using existing consul-key pair...
 else
     echo No consul-key pair exists, generating new keys...

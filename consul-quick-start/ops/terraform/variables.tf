@@ -1,14 +1,14 @@
-/* These required variables can be passed in through the command line by
-referencing environment variables (below example), or you can use
-a terraform.tfvars file and terraform will grab these vars from there
-and all you have to run is 'terraform apply'
+/* The variables required for a Terraform command to run properly
+can be passed in along with the Terraform command as shown below,
+or you can use the terraform.tfvars file and Terraform will grab the
+variables from there and all you will have to run is 'terraform apply'
 
 terraform apply \
     -var "aws_access_key=${AWS_ACCESS_KEY}" \
     -var "aws_secret_key=${AWS_SECRET_KEY}" \
     -var "atlas_username=${ATLAS_USERNAME}" \
     -var "atlas_token=${ATLAS_TOKEN}" \
-    -var "atlas_environment=${YOUR_ATLAS_ENVIRONMENT_NAME}"
+    -var "atlas_environment=YOUR_ATLAS_ENVIRONMENT_NAME"
 
 See https://www.terraform.io/intro/getting-started/variables.html */
 
