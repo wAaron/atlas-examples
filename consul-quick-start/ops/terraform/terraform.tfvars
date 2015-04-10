@@ -10,9 +10,9 @@ atlas_username = "YOUR_ATLAS_USERNAME"
 atlas_token = "YOUR_ATLAS_TOKEN"
 atlas_environment = "YOUR_ATLAS_ENVIRONMENT_NAME"
 
-# Optional Configuration Variables - Uncomment and populate the variables
-# below with your desired configuration to override the defaults
-# in ops/terraform/variables.tf
+# Optional Configuration Variables - Uncomment and populate
+# the variables below with your desired configuration to
+# override the defaults in ops/terraform/variables.tf
 # region = "us-east-1"
 # ami = "ami-dc1529b4"
 # instance_type = "t2.micro"
