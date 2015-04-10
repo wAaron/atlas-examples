@@ -15,6 +15,7 @@ resource "aws_instance" "consul" {
             "sudo sed -i -- 's/{{ atlas_username }}/${var.atlas_username}/g' /etc/init/consul.conf",
             "sudo sed -i -- 's/{{ atlas_token }}/${var.atlas_token}/g' /etc/init/consul.conf",
             "sudo sed -i -- 's/{{ atlas_environment }}/${var.atlas_environment}/g' /etc/init/consul.conf",
+            "sudo sed -i -- 's/{{ count }}/${var.count}/g' /etc/init/consul.conf",
             "sudo service consul restart"
         ]
         connection {
