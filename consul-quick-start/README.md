@@ -24,7 +24,7 @@ Before jumping into configuration steps, it's helpful to have a mental model for
 
 Deploy a Three-node Consul Cluster
 -----------------------------------
-1. Make sure you are in the [ops/terraform](ops/terraform) directory.
+1. Navigate to the [ops/terraform](ops/terraform) directory on the command line.
 2. Run `terraform remote config -backend-config name=<your_atlas_username>/<your_atlas_environment_name>` in the [ops/terraform](ops/terraform) directory, replacing `<your_atlas_username>` with your Atlas username and `<your_atlas_environment_name>` with your desired Atlas environment name to configure [remote state storage](https://www.terraform.io/docs/commands/remote-config.html) for this infrastructure. Now when you run Terraform, the infrastructure state will be saved in Atlas, keeping a versioned history of your infrastructure.
 3. Get the latest consul module by running `terraform get` in the [ops/terraform](ops/terraform) directory.
 4. To deploy your three-node Consul cluster, all you need to do is run `terraform push -name <your_atlas_username>/<your_atlas_environment_name>` in the [ops/terraform](ops/terraform) directory, replacing `<your_atlas_username>` with your Atlas username and `<your_atlas_environment_name>` with your desired Atlas environment name used above.
@@ -41,10 +41,11 @@ Build Your Own Consul Cluster AMI with Packer
 ------------------------
 1. Make sure you have [Packer](https://packer.io/) [downloaded](https://www.packer.io/downloads.html) and [installed](https://www.packer.io/intro/getting-started/setup.html).
 2. Replace `YOUR_ATLAS_USERNAME` and `YOUR_ATLAS_BUILD_NAME` in [ops/consul.json](ops/consul.json) with your Atlas username and desired Atlas build configuration name.
-3. Run `packer push -create consul.json` in the [ops](ops) directory.
-4. Navigate to "Variables" on the left side panel of the your new build configuration in the [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account, then add the key `AWS_ACCESS_KEY` using your "AWS Access Key Id" as the value and the key `AWS_SECRET_KEY` using your "AWS Secret Access Key" as the value.
-5. Navigate back to "Versions" on the left side panel of your build configuration, then click "Rebuild" on the your build configuration that errored. This one should succeed.
-6. Update your [ops/terraform/main.tf](ops/terraform/main.tf) template to add your Atlas artifact as a resource and reference that artifact in the [consul module](ops/terraform/main.tf#L33) instead of the "ami" variable. See below code snippet - be sure to replace `YOUR_ATLAS_BUILD_NAME` with the build configuration name you chose in the above Packer template.
+3. Navigate to the [ops](ops) directory on the command line.
+4. Run `packer push -create consul.json` in the [ops](ops) directory.
+5. Navigate to "Variables" on the left side panel of the your new build configuration in the [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account, then add the key `AWS_ACCESS_KEY` using your "AWS Access Key Id" as the value and the key `AWS_SECRET_KEY` using your "AWS Secret Access Key" as the value.
+6. Navigate back to "Versions" on the left side panel of your build configuration, then click "Rebuild" on the your build configuration that errored. This one should succeed.
+7. Update your [ops/terraform/main.tf](ops/terraform/main.tf) template to add your Atlas artifact as a resource and reference that artifact in the [consul module](ops/terraform/main.tf#L33) instead of the "ami" variable. See below code snippet - be sure to replace `YOUR_ATLAS_BUILD_NAME` with the build configuration name you chose in the above Packer template.
 
    ```
    provider "atlas" {
@@ -66,5 +67,5 @@ Build Your Own Consul Cluster AMI with Packer
    # Replace ami = "${var.ami}" (ops/terraform/main.tf#L33) with the below
    ami = "${atlas_artifact.YOUR_ATLAS_BUILD_NAME.metadata_full.region-us-east-1}"
    ```
-7. Remove the "ami" variable from [ops/terraform/variables.tf#L26](ops/terraform/variables.tf#L26) and [ops/terraform/terraform.tfvars#L17](ops/terraform/terraform.tfvars#L17) as these are no longer required.
-8. Refer to [Deploy a Three-node Consul Cluster](README.md#deploy-a-three-node-consul-cluster) to deploy using Terraform!
+8. Remove the "ami" variable from [ops/terraform/variables.tf#L26](ops/terraform/variables.tf#L26) and [ops/terraform/terraform.tfvars#L17](ops/terraform/terraform.tfvars#L17) as these are no longer required.
+9. Refer to [Deploy a Three-node Consul Cluster](README.md#deploy-a-three-node-consul-cluster) to deploy using Terraform!
