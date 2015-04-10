@@ -1,7 +1,8 @@
-/* The variables required for a Terraform command to run properly
-can be passed in along with the Terraform command as shown below,
-or you can use the terraform.tfvars file and Terraform will grab the
-variables from there and all you will have to run is 'terraform apply'
+/* The variables required for a Terraform command to run
+properly can be passed in at the command line as shown below,
+or you can use the terraform.tfvars file and Terraform will
+populate the variables from there and all you will have to
+run is the Terraform command e.g.'terraform apply'
 
 terraform apply \
     -var "aws_access_key=${AWS_ACCESS_KEY}" \
