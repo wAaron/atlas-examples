@@ -27,14 +27,14 @@ resource "aws_key_pair" "consul" {
 
 module "consul" {
     source = "./consul"
-    atlas_username = "${var.atlas_username}"
-    atlas_token = "${var.atlas_token}"
-    atlas_environment = "${var.atlas_environment}"
     ami = "${var.ami}"
+    security_group = "${aws_security_group.allow_all.name}"
+    key_name = "${aws_key_pair.consul.key_name}"
     instance_type = "${var.instance_type}"
     availability_zone = "${var.availability_zone}"
     count = "${var.count}"
-    security_group = "${aws_security_group.allow_all.name}"
-    key_name = "${aws_key_pair.consul.key_name}"
+    atlas_username = "${var.atlas_username}"
+    atlas_token = "${var.atlas_token}"
+    atlas_environment = "${var.atlas_environment}"
     key_file = "ssh_keys/consul-key.pem"
 }
