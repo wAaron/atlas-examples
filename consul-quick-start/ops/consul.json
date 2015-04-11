@@ -16,7 +16,7 @@
         "ami_description": "AMI builder for Consul"
     }],
     "push": {
-      "name": "YOUR_ATLAS_USERNAME/YOUR_ATLAS_BUILD_NAME"
+      "name": "YOUR_ATLAS_USERNAME/consul"
     },
     "provisioners": [
     {
@@ -43,7 +43,7 @@
     "post-processors": [
       {
         "type": "atlas",
-        "artifact": "YOUR_ATLAS_USERNAME/YOUR_ATLAS_BUILD_NAME",
+        "artifact": "YOUR_ATLAS_USERNAME/consul",
         "artifact_type": "aws.ami",
         "metadata": {
           "created_at": "{{timestamp}}"

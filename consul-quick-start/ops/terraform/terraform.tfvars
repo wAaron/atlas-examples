@@ -8,7 +8,6 @@ aws_access_key = "YOUR_AWS_ACCESS_KEY"
 aws_secret_key = "YOUR_AWS_SECRET_KEY"
 atlas_username = "YOUR_ATLAS_USERNAME"
 atlas_token = "YOUR_ATLAS_TOKEN"
-atlas_environment = "YOUR_ATLAS_ENVIRONMENT_NAME"
 
 # Optional Configuration Variables - Uncomment and populate
 # the variables below with your desired configuration to
@@ -18,3 +17,4 @@ atlas_environment = "YOUR_ATLAS_ENVIRONMENT_NAME"
 # instance_type = "t2.micro"
 # availability_zone = "us-east-1a"
 # count = 3
+# atlas_environment = "consul"
