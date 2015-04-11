@@ -9,22 +9,22 @@ provider "aws" {
 }
 
 resource "atlas_artifact" "metamon" {
-    name = "${var.atlas_username}/metamon"
+    name = "${var.atlas_username}/metamon_4"
     type = "aws.ami"
 
    # Automatically generates key pair if not present
    provisioner "local-exec" {
-       command = "sudo scripts/generate_key_pair.sh metamon"
+       command = "sudo sh scripts/generate_key_pair.sh metamon"
    }
 }
 
 resource "atlas_artifact" "consul" {
-    name = "${var.atlas_username}/consul"
+    name = "${var.atlas_username}/consul_4"
     type = "aws.ami"
 
    # Automatically generates key pair if not present
    provisioner "local-exec" {
-       command = "sudo scripts/generate_key_pair.sh consul"
+       command = "sudo sh scripts/generate_key_pair.sh consul"
    }
 }
 

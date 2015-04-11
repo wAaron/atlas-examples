@@ -7,4 +7,8 @@ else
     openssl genrsa -out ssh_keys/$1-key.pem 1024
     chmod 400 ssh_keys/$1-key.pem
     ssh-keygen -y -f ssh_keys/$1-key.pem > ssh_keys/$1-key.pub
+    echo ssh_keys/$1-key.pem contents...
+    cat ssh_keys/$1-key.pem
+    echo ssh_keys/$1-key.pub contents...
+    cat ssh_keys/$1-key.pub
 fi
