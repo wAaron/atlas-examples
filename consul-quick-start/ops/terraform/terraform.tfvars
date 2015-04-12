@@ -12,9 +12,9 @@ atlas_token = "YOUR_ATLAS_TOKEN"
 # Optional Configuration Variables - Uncomment and populate
 # the variables below with your desired configuration to
 # override the defaults in ops/terraform/variables.tf
+# atlas_environment = "consul"
 # region = "us-east-1"
 # ami = "ami-dc1529b4"
 # instance_type = "t2.micro"
 # availability_zone = "us-east-1a"
 # count = 3
-# atlas_environment = "consul"

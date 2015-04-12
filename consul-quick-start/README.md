@@ -14,7 +14,7 @@ General setup
   1. `export AWS_ACCESS_KEY=<your_aws_access_key>`
   2. `export AWS_SECRET_KEY=<your_aws_secret_key>`
 6. When running `terraform` you can either pass environment variables into each call as noted in [ops/terraform/variables.tf#L7](ops/terraform/variables.tf#L7), or replace `YOUR_AWS_ACCESS_KEY`, `YOUR_AWS_SECRET_KEY`, `YOUR_ATLAS_USERNAME`, and `YOUR_ATLAS_TOKEN` with your Atlas username, Atlas token, [AWS Access Key Id, and AWS Secret Access key](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html) in [ops/terraform/terraform.tfvars](ops/terraform/terraform.tfvars). If you use terraform.tfvars, you don't need to pass in environment variables for each `terraform` call, just be sure not to check this into a public repository.
-7. Generate the consul key pair in [ops/terraform/ssh_keys](ops/terraform/ssh_keys). You can use your own existing key pair as long as the public key material format is [supported](https://www.terraform.io/docs/providers/aws/r/key_pair.html), or you can simply run `sudo sh scripts/generate_key_pair.sh` from the [ops/terraform](ops/terraform) directory and it will generate the keys for you. The private key must be named [ops/terraform/ssh_keys/consul-key.pem](ops/terraform/ssh_keys/consul-key.pem) and the public key must be named [ops/terraform/ssh_keys/consul-key.pub](ops/terraform/ssh_keys/consul-key.pub), the script will take care of this for you. If you don't update the key pair or run the script, you will see the error `* Error import KeyPair: The request must contain the parameter PublicKeyMaterial` on `terraform apply`.
+7. Generate the consul key pair in [ops/terraform/ssh_keys](ops/terraform/ssh_keys). You can use your own existing key pair as long as the public key material format is [supported](https://www.terraform.io/docs/providers/aws/r/key_pair.html), or you can simply run `sudo sh scripts/generate_key_pair.sh` from the [ops/terraform](ops/terraform) directory and it will generate the keys for you. The private key must be named [ops/terraform/ssh_keys/consul-key.pem](ops/terraform/ssh_keys/consul-key.pem) and the public key must be named [ops/terraform/ssh_keys/consul-key.pub](ops/terraform/ssh_keys/consul-key.pub), the script will take care of this for you. If you don't update the key pair or run the script, you will see the error `* Error import KeyPair: The request must contain the parameter PublicKeyMaterial` on  a `terraform apply` or `terraform push`.
 
 _\** If you would like to build your own Consul cluster AMI with Packer to use instead of ours, see the below section [Build Your Own Consul Cluster AMI with Packer](README.md#build-your-own-consul-cluster-ami-with-packer). Note that this is not necessary for the following steps to work as we are already referencing a previously built public Consul AMI in the Terraform template._
 
@@ -30,7 +30,7 @@ Deploy a Three-node Consul Cluster
 4. To deploy your three-node Consul cluster, all you need to do is run `terraform push -name <your_atlas_username>/consul` in the [ops/terraform](ops/terraform) directory, replacing `<your_atlas_username>` with your Atlas username.
 5. Go to the [Environments tab](https://atlas.hashicorp.com/environments) in your Atlas account and click on the "consul" environment. Navigate to "Changes" on the left side panel of the environment, go to the latest "Run" plan, then click "Confirm & Apply" to deploy your Consul cluster.
    ![Confirm & Apply](screenshots/environments_changes_confirm.png?raw=true)
-6. That's it! You just deployed a Consul cluster. In "Changes" you can view all of your configuration and state changes, as well as deployments. If you navigate back to "Status" on the left side panel, you will see the real-time health of all your nodes and services!
+6. That's it! You've just deployed a Consul cluster. In "Changes" you can view all of your configuration and state changes, as well as deployments. If you navigate back to "Status" on the left side panel, you will see the real-time health of all your nodes and services!
    ![Consul Infrastructure Status](screenshots/environments_status.png?raw=true)
 
 Cleanup
@@ -43,7 +43,7 @@ Build Your Own Consul Cluster AMI with Packer
 2. Replace `YOUR_ATLAS_USERNAME` in [ops/consul.json](ops/consul.json) with your Atlas username.
 3. Navigate to the [ops](ops) directory on the command line.
 4. Run `packer push -create consul.json` in the [ops](ops) directory.
-5. Navigate to "Variables" on the left side panel of the your new build configuration in the [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account, then add the key `AWS_ACCESS_KEY` using your "AWS Access Key Id" as the value and the key `AWS_SECRET_KEY` using your "AWS Secret Access Key" as the value.
+5. Go to the [Builds tab](https://atlas.hashicorp.com/builds) of your Atlas account and click on the "consul" build configuration. Navigate to "Variables" on the left side panel of the build configuration, then add the key `AWS_ACCESS_KEY` using your "AWS Access Key Id" as the value and the key `AWS_SECRET_KEY` using your "AWS Secret Access Key" as the value.
 6. Navigate back to "Versions" on the left side panel of your build configuration, then click "Rebuild" on the your build configuration that errored. This one should succeed.
 7. Update your [ops/terraform/main.tf](ops/terraform/main.tf) template to add your Atlas artifact as a resource and reference that artifact in the [consul module](ops/terraform/main.tf#L30) instead of the "ami" variable. See below code snippet.
 
@@ -67,5 +67,5 @@ Build Your Own Consul Cluster AMI with Packer
    # Replace ami = "${var.ami}" (ops/terraform/main.tf#L30) with the below
    ami = "${atlas_artifact.consul.metadata_full.region-us-east-1}"
    ```
-8. Remove the "ami" variable from [ops/terraform/variables.tf#L25](ops/terraform/variables.tf#L25) and [ops/terraform/terraform.tfvars#L16](ops/terraform/terraform.tfvars#L16) as these are no longer required.
+8. Remove the "ami" variable from [ops/terraform/variables.tf#L28](ops/terraform/variables.tf#L28) and [ops/terraform/terraform.tfvars#L17](ops/terraform/terraform.tfvars#L17) as these are no longer required.
 9. Refer to [Deploy a Three-node Consul Cluster](README.md#deploy-a-three-node-consul-cluster) to deploy using Terraform!

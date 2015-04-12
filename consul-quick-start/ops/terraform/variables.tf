@@ -19,6 +19,9 @@ variable "atlas_username" {}
 variable "atlas_token" {}
 
 # Optional Configuration Variables
+variable "atlas_environment" {
+    default = "consul"
+}
 variable "region" {
     default = "us-east-1"
 }
@@ -33,7 +36,4 @@ variable "availability_zone" {
 }
 variable "count" {
     default = 3
-}
-variable "atlas_environment" {
-    default = "consul"
 }
