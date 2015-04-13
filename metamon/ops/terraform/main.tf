@@ -29,11 +29,11 @@ resource "atlas_artifact" "consul" {
 }
 
 resource "aws_security_group" "allow_all" {
-    name = "allow_all"
+    name = "allow_all_${var.region}"
     description = "Allow all inbound traffic"
 
     tags {
-      Name = "allow_all"
+      Name = "allow_all_${var.region}"
     }
 
     ingress {
