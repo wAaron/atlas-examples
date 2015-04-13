@@ -5,8 +5,8 @@ variable "instance_type" {}
 variable "availability_zone" {}
 variable "count" {}
 variable "atlas_username" {}
-variable "atlas_environment" {}
 variable "atlas_token" {}
+variable "atlas_environment" {}
 variable "user" {
     default = "ubuntu"
 }

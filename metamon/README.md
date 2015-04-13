@@ -14,7 +14,7 @@ General setup
    `export AWS_ACCESS_KEY=<your_aws_access_key>`
    `export AWS_SECRET_KEY=<your_aws_secret_key>`
 6. In the [Vagrantfile](Vagrantfile) and Packer files [ops/site.json](ops/site.json) and [ops/consul.json](ops/consul.json) you must replace `YOUR_ATLAS_USERNAME` with your Atlas username.
-7. When running `terraform` you can either pass environment variables into each call as noted in [ops/terraform/variables.tf#L6](ops/terraform/variables.tf#L7), or replace `YOUR_AWS_ACCESS_KEY`, `YOUR_AWS_SECRET_KEY`, `YOUR_ATLAS_USERNAME`, `YOUR_ATLAS_TOKEN`, and `YOUR_ATLAS_ENVIRONMENT_NAME` with your Atlas username, Atlas token, [AWS Access Key Id, AWS Secret Access key](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html), and desired Atlas environment name in [ops/terraform/terraform.tfvars](ops/terraform/terraform.tfvars). If you use terraform.tfvars, you don't need to pass in environment variables for each `terraform` call, just be sure not to check this into a public repository.
+7. When running `terraform` you can either pass environment variables into each call as noted in [ops/terraform/variables.tf#L6](ops/terraform/variables.tf#L7), or replace `YOUR_AWS_ACCESS_KEY`, `YOUR_AWS_SECRET_KEY`, `YOUR_ATLAS_USERNAME`, and `YOUR_ATLAS_TOKEN` with your Atlas username, Atlas token, [AWS Access Key Id, and AWS Secret Access key](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSGettingStartedGuide/AWSCredentials.html) in [ops/terraform/terraform.tfvars](ops/terraform/terraform.tfvars). If you use terraform.tfvars, you don't need to pass in environment variables for each `terraform` call, just be sure not to check this into a public repository.
 
 tl;dr Quick Steps
 -----------------------------------------------
@@ -30,7 +30,7 @@ tl;dr Quick Steps
 10. Run `terraform remote config -backend-config name=<your_atlas_username>/metamon` in the [ops/terraform](ops/terraform) directory, replacing `<your_atlas_username>` with your Atlas username to configure [remote state storage](https://www.terraform.io/docs/commands/remote-config.html) for this infrastructure.
 11. Get the latest modules by running `terraform get` in the [ops/terraform](ops/terraform) directory.
 12. Run `terraform push -name <your_atlas_username>/metamon` in the [ops/terraform](ops/terraform) directory, replacing `<your_atlas_username>` with your Atlas username.
-13. Go to the [Environments tab](https://atlas.hashicorp.com/environments) in your Atlas account and click on the "metamon" environment. Navigate to "Changes" on the left side panel of the environment, go to the latest "Run" plan, then click "Confirm & Apply" to deploy your Metamon web app and Consul cluster.
+13. Go to the [Environments tab](https://atlas.hashicorp.com/environments) in your Atlas account and click on the "metamon" environment. Navigate to "Changes" on the left side panel of the environment, click on the latest "Run" plan that says "NEEDS USER ACTION", then click "Confirm & Apply" to deploy your Metamon web app and Consul cluster.
 
 14. That's it! You just deployed a a Metamon web app and Consul cluster. In "Changes" you can view all of your configuration and state changes, as well as deployments. If you navigate back to "Status" on the left side panel, you will see the real-time health of all your nodes and services. If you go the the public ip address of the newly created "metamon_1" box, you should see a web page that says "Hello, Atlas!".
 

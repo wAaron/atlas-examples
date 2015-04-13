@@ -14,7 +14,7 @@ resource "atlas_artifact" "metamon" {
 
    # Automatically generates key pair if not present
    provisioner "local-exec" {
-       command = "sudo sh scripts/generate_key_pair.sh metamon"
+       command = "sh scripts/generate_key_pair.sh metamon"
    }
 }
 
@@ -24,7 +24,7 @@ resource "atlas_artifact" "consul" {
 
    # Automatically generates key pair if not present
    provisioner "local-exec" {
-       command = "sudo sh scripts/generate_key_pair.sh consul"
+       command = "sh scripts/generate_key_pair.sh consul"
    }
 }
 
@@ -47,11 +47,13 @@ resource "aws_security_group" "allow_all" {
 resource "aws_key_pair" "metamon" {
     key_name = "metamon-key"
     public_key = "${file(\"ssh_keys/metamon-key.pub\")}"
+    depends_on = ["atlas_artifact.metamon"]
 }
 
 resource "aws_key_pair" "consul" {
     key_name = "consul-key"
     public_key = "${file(\"ssh_keys/consul-key.pub\")}"
+    depends_on = ["atlas_artifact.consul"]
 }
 
 module "metamon" {

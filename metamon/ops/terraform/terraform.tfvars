@@ -8,11 +8,11 @@ aws_access_key = "YOUR_AWS_ACCESS_KEY"
 aws_secret_key = "YOUR_AWS_SECRET_KEY"
 atlas_username = "YOUR_ATLAS_USERNAME"
 atlas_token = "YOUR_ATLAS_TOKEN"
-atlas_environment = "YOUR_ATLAS_ENVIRONMENT_NAME"
 
 # Optional Configuration Variables - Uncomment and populate
 # the variables below with your desired configuration to
 # override the defaults in ops/terraform/variables.tf
+# atlas_environment = "metamon_4"
 # region = "us-east-1"
 
 # metamon_instance_type = "t2.micro"

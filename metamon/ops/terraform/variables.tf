@@ -8,8 +8,7 @@ terraform apply \
     -var "aws_access_key=${AWS_ACCESS_KEY}" \
     -var "aws_secret_key=${AWS_SECRET_KEY}" \
     -var "atlas_username=${ATLAS_USERNAME}" \
-    -var "atlas_token=${ATLAS_TOKEN}" \
-    -var "atlas_environment=YOUR_ATLAS_ENVIRONMENT_NAME"
+    -var "atlas_token=${ATLAS_TOKEN}"
 
 See https://www.terraform.io/intro/getting-started/variables.html */
 
@@ -18,9 +17,11 @@ variable "aws_access_key" {}
 variable "aws_secret_key" {}
 variable "atlas_username" {}
 variable "atlas_token" {}
-variable "atlas_environment" {}
 
 # Optional Configuration Variables
+variable "atlas_environment" {
+    default = "metamon"
+}
 variable "region" {
     default = "us-east-1"
 }
