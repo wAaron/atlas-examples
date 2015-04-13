@@ -14,7 +14,7 @@ resource "atlas_artifact" "metamon" {
 
    # Automatically generates key pair if not present
    provisioner "local-exec" {
-       command = "sh scripts/generate_key_pair.sh metamon"
+       command = "sh scripts/generate_key_pair.sh metamon ${var.region}"
    }
 }
 
@@ -24,7 +24,7 @@ resource "atlas_artifact" "consul" {
 
    # Automatically generates key pair if not present
    provisioner "local-exec" {
-       command = "sh scripts/generate_key_pair.sh consul"
+       command = "sh scripts/generate_key_pair.sh consul ${var.region}"
    }
 }
 
@@ -45,14 +45,14 @@ resource "aws_security_group" "allow_all" {
 }
 
 resource "aws_key_pair" "metamon" {
-    key_name = "metamon-key"
-    public_key = "${file(\"ssh_keys/metamon-key.pub\")}"
+    key_name = "metamon-key-pair-${var.region}"
+    public_key = "${file(\"ssh_keys/metamon-key-pair-${var.region}.pub\")}"
     depends_on = ["atlas_artifact.metamon"]
 }
 
 resource "aws_key_pair" "consul" {
-    key_name = "consul-key"
-    public_key = "${file(\"ssh_keys/consul-key.pub\")}"
+    key_name = "consul-key-pair-${var.region}"
+    public_key = "${file(\"ssh_keys/consul-key-pair-${var.region}.pub\")}"
     depends_on = ["atlas_artifact.consul"]
 }
 
@@ -67,7 +67,7 @@ module "metamon" {
     atlas_username = "${var.atlas_username}"
     atlas_token = "${var.atlas_token}"
     atlas_environment = "${var.atlas_environment}"
-    key_file = "ssh_keys/metamon-key.pem"
+    key_file = "ssh_keys/metamon-key-pair-${var.region}.pem"
 }
 
 module "consul" {
@@ -82,5 +82,5 @@ module "consul" {
     atlas_username = "${var.atlas_username}"
     atlas_token = "${var.atlas_token}"
     atlas_environment = "${var.atlas_environment}"
-    key_file = "ssh_keys/consul-key.pem"
+    key_file = "ssh_keys/consul-key-pair-${var.region}.pem"
 }

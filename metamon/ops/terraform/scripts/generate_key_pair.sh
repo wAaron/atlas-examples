@@ -1,14 +1,14 @@
-if [ -s "ssh_keys/$1-key.pem" ] && [ -s "ssh_keys/$1-key.pub" ]; then
-    echo Using existing $1-key pair...
+if [ -s "ssh_keys/$1-key-pair-$2.pem" ] && [ -s "ssh_keys/$1-key-pair-$2.pub" ]; then
+    echo Using existing $1-key-pair-$2 pair...
 else
-    echo No $1-key pair exists, generating new keys...
-    rm -rf ssh_keys/$1-key.pem
-    rm -rf ssh_keys/$1-key.pub
-    openssl genrsa -out ssh_keys/$1-key.pem 1024
-    chmod 400 ssh_keys/$1-key.pem
-    ssh-keygen -y -f ssh_keys/$1-key.pem > ssh_keys/$1-key.pub
-    echo ssh_keys/$1-key.pem contents...
-    cat ssh_keys/$1-key.pem
-    echo ssh_keys/$1-key.pub contents...
-    cat ssh_keys/$1-key.pub
+    echo $1-key-pair-$2 does not exist, generating new keys...
+    rm -rf ssh_keys/$1-key-pair-$2.pem
+    rm -rf ssh_keys/$1-key-pair-$2.pub
+    openssl genrsa -out ssh_keys/$1-key-pair-$2.pem 1024
+    chmod 400 ssh_keys/$1-key-pair-$2.pem
+    ssh-keygen -y -f ssh_keys/$1-key-pair-$2.pem > ssh_keys/$1-key-pair-$2.pub
+    echo ssh_keys/$1-key-pair-$2.pem contents...
+    cat ssh_keys/$1-key-pair-$2.pem
+    echo ssh_keys/$1-key-pair-$2.pub contents...
+    cat ssh_keys/$1-key-pair-$2.pub
 fi
