@@ -12,7 +12,7 @@ atlas_token = "YOUR_ATLAS_TOKEN"
 # Optional Configuration Variables - Uncomment and populate
 # the variables below with your desired configuration to
 # override the defaults in ops/terraform/variables.tf
-# atlas_environment = "metamon_4"
+# atlas_environment = "metamon"
 # region = "us-east-1"
 
 # metamon_instance_type = "t2.micro"
