@@ -27,6 +27,12 @@ variable "region" {
 }
 
 # Metamon Optional Configuration Variables
+variable "metamon_private_key" {
+    default = "\"ssh_keys/metamon-key.pem\""
+}
+variable "metamon_public_key" {
+    default = "\"ssh_keys/metamon-key.pub\""
+}
 variable "metamon_instance_type" {
     default = "t2.micro"
 }
@@ -38,6 +44,12 @@ variable "metamon_count" {
 }
 
 # Consul Optional Configuration Variables
+variable "consul_private_key" {
+    default = "\"ssh_keys/consul-key.pem\""
+}
+variable "consul_public_key" {
+    default = "\"ssh_keys/consul-key.pub\""
+}
 variable "consul_ami" {
     default = "ami-dc1529b4"
 }

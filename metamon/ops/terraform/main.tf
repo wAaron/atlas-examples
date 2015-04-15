@@ -9,31 +9,21 @@ provider "aws" {
 }
 
 resource "atlas_artifact" "metamon" {
-    name = "${var.atlas_username}/metamon_4"
+    name = "${var.atlas_username}/metamon"
     type = "aws.ami"
-
-   # Automatically generates key pair if not present
-   provisioner "local-exec" {
-       command = "sh scripts/generate_key_pair.sh metamon ${var.region}"
-   }
 }
 
 resource "atlas_artifact" "consul" {
-    name = "${var.atlas_username}/consul_4"
+    name = "${var.atlas_username}/consul"
     type = "aws.ami"
-
-   # Automatically generates key pair if not present
-   provisioner "local-exec" {
-       command = "sh scripts/generate_key_pair.sh consul ${var.region}"
-   }
 }
 
 resource "aws_security_group" "allow_all" {
-    name = "allow_all_${var.region}"
+    name = "allow_all"
     description = "Allow all inbound traffic"
 
     tags {
-      Name = "allow_all_${var.region}"
+      Name = "allow_all"
     }
 
     ingress {
@@ -45,14 +35,14 @@ resource "aws_security_group" "allow_all" {
 }
 
 resource "aws_key_pair" "metamon" {
-    key_name = "metamon-key-pair-${var.region}"
-    public_key = "${file(\"ssh_keys/metamon-key-pair-${var.region}.pub\")}"
+    key_name = "metamon-key-pair"
+    public_key = "${file(var.metamon_public_key)}"
     depends_on = ["atlas_artifact.metamon"]
 }
 
 resource "aws_key_pair" "consul" {
-    key_name = "consul-key-pair-${var.region}"
-    public_key = "${file(\"ssh_keys/consul-key-pair-${var.region}.pub\")}"
+    key_name = "consul-key-pair"
+    public_key = "${file(var.consul_public_key)}"
     depends_on = ["atlas_artifact.consul"]
 }
 
@@ -67,7 +57,7 @@ module "metamon" {
     atlas_username = "${var.atlas_username}"
     atlas_token = "${var.atlas_token}"
     atlas_environment = "${var.atlas_environment}"
-    key_file = "ssh_keys/metamon-key-pair-${var.region}.pem"
+    key_file = "${var.metamon_private_key}"
 }
 
 module "consul" {
@@ -82,5 +72,5 @@ module "consul" {
     atlas_username = "${var.atlas_username}"
     atlas_token = "${var.atlas_token}"
     atlas_environment = "${var.atlas_environment}"
-    key_file = "ssh_keys/consul-key-pair-${var.region}.pem"
+    key_file = "${var.consul_private_key}"
 }
