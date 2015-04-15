@@ -15,14 +15,14 @@ atlas_token = "YOUR_ATLAS_TOKEN"
 # atlas_environment = "metamon"
 # region = "us-east-1"
 
-# metamon_private_key = "ssh_keys/metamon-key.pem"
-# metamon_public_key = "ssh_keys/metamon-key.pub"
+# metamon_private_key = "\"ssh_keys/metamon-key.pem\""
+# metamon_public_key = "\"ssh_keys/metamon-key.pub\""
 # metamon_instance_type = "t2.micro"
 # metamon_availability_zone = "us-east-1a"
 # metamon_count = 1
 
-# consul_private_key = "ssh_keys/consul-key.pem"
-# consul_public_key = "ssh_keys/consul-key.pub"
+# consul_private_key = "\"ssh_keys/consul-key.pem\""
+# consul_public_key = "\"ssh_keys/consul-key.pub\""
 # consul_ami = "ami-dc1529b4"
 # consul_instance_type = "t2.micro"
 # consul_availability_zone = "us-east-1a"
