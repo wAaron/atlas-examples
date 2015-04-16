@@ -62,8 +62,7 @@ module "metamon" {
 
 module "consul" {
     source = "./consul"
-    ami = "${var.consul_ami}"
-    # ami = "${atlas_artifact.consul.metadata_full.region-us-east-1}"
+    ami = "${atlas_artifact.consul.metadata_full.region-us-east-1}"
     security_group = "${aws_security_group.allow_all.name}"
     key_name = "${aws_key_pair.consul.key_name}"
     instance_type = "${var.consul_instance_type}"

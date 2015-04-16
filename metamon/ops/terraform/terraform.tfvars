@@ -23,7 +23,6 @@ atlas_token = "YOUR_ATLAS_TOKEN"
 
 # consul_private_key = "ssh_keys/consul-key.pem"
 # consul_public_key = "ssh_keys/consul-key.pub"
-# consul_ami = "ami-dc1529b4"
 # consul_instance_type = "t2.micro"
 # consul_availability_zone = "us-east-1a"
 # consul_count = 3
